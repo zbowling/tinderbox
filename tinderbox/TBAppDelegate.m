@@ -7,14 +7,17 @@
 //
 
 #import "TBAppDelegate.h"
+#import "TBNodeServer.h"
 
 @implementation TBAppDelegate
 
-@synthesize window = _window;
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    [TBNodeServer sharedServer];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification {
+    [[TBNodeServer sharedServer] stopServer];
 }
 
 @end
