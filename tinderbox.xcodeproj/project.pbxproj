@@ -1,0 +1,450 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D9131A1714A6A24600EF9073 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9131A1614A6A24600EF9073 /* Cocoa.framework */; };
+		D9131A2114A6A24600EF9073 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D9131A1F14A6A24600EF9073 /* InfoPlist.strings */; };
+		D9131A2314A6A24600EF9073 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A2214A6A24600EF9073 /* main.m */; };
+		D9131A2714A6A24600EF9073 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D9131A2514A6A24600EF9073 /* Credits.rtf */; };
+		D9131A2A14A6A24600EF9073 /* TBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A2914A6A24600EF9073 /* TBAppDelegate.m */; };
+		D9131A2D14A6A24600EF9073 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9131A2B14A6A24600EF9073 /* MainMenu.xib */; };
+		D9131A3514A6A24700EF9073 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9131A3414A6A24700EF9073 /* SenTestingKit.framework */; };
+		D9131A3614A6A24700EF9073 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9131A1614A6A24600EF9073 /* Cocoa.framework */; };
+		D9131A3E14A6A24700EF9073 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D9131A3C14A6A24700EF9073 /* InfoPlist.strings */; };
+		D9131A4114A6A24700EF9073 /* tinderboxTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A4014A6A24700EF9073 /* tinderboxTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D9131A3714A6A24700EF9073 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D9131A0914A6A24600EF9073 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D9131A1114A6A24600EF9073;
+			remoteInfo = tinderbox;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D9131A1214A6A24600EF9073 /* tinderbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tinderbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9131A1614A6A24600EF9073 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		D9131A1914A6A24600EF9073 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		D9131A1A14A6A24600EF9073 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D9131A1B14A6A24600EF9073 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D9131A1E14A6A24600EF9073 /* tinderbox-Info.plist */ = {isa = PBXFileReference; path = "tinderbox-Info.plist"; sourceTree = "<group>"; };
+		D9131A2014A6A24600EF9073 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D9131A2214A6A24600EF9073 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D9131A2414A6A24600EF9073 /* tinderbox-Prefix.pch */ = {isa = PBXFileReference; path = "tinderbox-Prefix.pch"; sourceTree = "<group>"; };
+		D9131A2614A6A24600EF9073 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		D9131A2814A6A24600EF9073 /* TBAppDelegate.h */ = {isa = PBXFileReference; path = TBAppDelegate.h; sourceTree = "<group>"; };
+		D9131A2914A6A24600EF9073 /* TBAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TBAppDelegate.m; sourceTree = "<group>"; };
+		D9131A2C14A6A24600EF9073 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D9131A3314A6A24700EF9073 /* tinderboxTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tinderboxTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9131A3414A6A24700EF9073 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D9131A3B14A6A24700EF9073 /* tinderboxTests-Info.plist */ = {isa = PBXFileReference; path = "tinderboxTests-Info.plist"; sourceTree = "<group>"; };
+		D9131A3D14A6A24700EF9073 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D9131A3F14A6A24700EF9073 /* tinderboxTests.h */ = {isa = PBXFileReference; path = tinderboxTests.h; sourceTree = "<group>"; };
+		D9131A4014A6A24700EF9073 /* tinderboxTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tinderboxTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D9131A0F14A6A24600EF9073 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9131A1714A6A24600EF9073 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D9131A2F14A6A24700EF9073 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9131A3514A6A24700EF9073 /* SenTestingKit.framework in Frameworks */,
+				D9131A3614A6A24700EF9073 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D9131A0714A6A24600EF9073 = {
+			isa = PBXGroup;
+			children = (
+				D9131A1C14A6A24600EF9073 /* tinderbox */,
+				D9131A3914A6A24700EF9073 /* tinderboxTests */,
+				D9131A1514A6A24600EF9073 /* Frameworks */,
+				D9131A1314A6A24600EF9073 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D9131A1314A6A24600EF9073 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A1214A6A24600EF9073 /* tinderbox.app */,
+				D9131A3314A6A24700EF9073 /* tinderboxTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D9131A1514A6A24600EF9073 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A1614A6A24600EF9073 /* Cocoa.framework */,
+				D9131A3414A6A24700EF9073 /* SenTestingKit.framework */,
+				D9131A1814A6A24600EF9073 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D9131A1814A6A24600EF9073 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A1914A6A24600EF9073 /* AppKit.framework */,
+				D9131A1A14A6A24600EF9073 /* CoreData.framework */,
+				D9131A1B14A6A24600EF9073 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		D9131A1C14A6A24600EF9073 /* tinderbox */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A2814A6A24600EF9073 /* TBAppDelegate.h */,
+				D9131A2914A6A24600EF9073 /* TBAppDelegate.m */,
+				D9131A2B14A6A24600EF9073 /* MainMenu.xib */,
+				D9131A1D14A6A24600EF9073 /* Supporting Files */,
+			);
+			path = tinderbox;
+			sourceTree = "<group>";
+		};
+		D9131A1D14A6A24600EF9073 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A1E14A6A24600EF9073 /* tinderbox-Info.plist */,
+				D9131A1F14A6A24600EF9073 /* InfoPlist.strings */,
+				D9131A2214A6A24600EF9073 /* main.m */,
+				D9131A2414A6A24600EF9073 /* tinderbox-Prefix.pch */,
+				D9131A2514A6A24600EF9073 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D9131A3914A6A24700EF9073 /* tinderboxTests */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A3F14A6A24700EF9073 /* tinderboxTests.h */,
+				D9131A4014A6A24700EF9073 /* tinderboxTests.m */,
+				D9131A3A14A6A24700EF9073 /* Supporting Files */,
+			);
+			path = tinderboxTests;
+			sourceTree = "<group>";
+		};
+		D9131A3A14A6A24700EF9073 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A3B14A6A24700EF9073 /* tinderboxTests-Info.plist */,
+				D9131A3C14A6A24700EF9073 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D9131A1114A6A24600EF9073 /* tinderbox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D9131A4414A6A24700EF9073 /* Build configuration list for PBXNativeTarget "tinderbox" */;
+			buildPhases = (
+				D9131A0E14A6A24600EF9073 /* Sources */,
+				D9131A0F14A6A24600EF9073 /* Frameworks */,
+				D9131A1014A6A24600EF9073 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tinderbox;
+			productName = tinderbox;
+			productReference = D9131A1214A6A24600EF9073 /* tinderbox.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D9131A3214A6A24700EF9073 /* tinderboxTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D9131A4714A6A24700EF9073 /* Build configuration list for PBXNativeTarget "tinderboxTests" */;
+			buildPhases = (
+				D9131A2E14A6A24700EF9073 /* Sources */,
+				D9131A2F14A6A24700EF9073 /* Frameworks */,
+				D9131A3014A6A24700EF9073 /* Resources */,
+				D9131A3114A6A24700EF9073 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D9131A3814A6A24700EF9073 /* PBXTargetDependency */,
+			);
+			name = tinderboxTests;
+			productName = tinderboxTests;
+			productReference = D9131A3314A6A24700EF9073 /* tinderboxTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D9131A0914A6A24600EF9073 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = D9131A0C14A6A24600EF9073 /* Build configuration list for PBXProject "tinderbox" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D9131A0714A6A24600EF9073;
+			productRefGroup = D9131A1314A6A24600EF9073 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D9131A1114A6A24600EF9073 /* tinderbox */,
+				D9131A3214A6A24700EF9073 /* tinderboxTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D9131A1014A6A24600EF9073 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9131A2114A6A24600EF9073 /* InfoPlist.strings in Resources */,
+				D9131A2714A6A24600EF9073 /* Credits.rtf in Resources */,
+				D9131A2D14A6A24600EF9073 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D9131A3014A6A24700EF9073 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9131A3E14A6A24700EF9073 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D9131A3114A6A24700EF9073 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D9131A0E14A6A24600EF9073 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9131A2314A6A24600EF9073 /* main.m in Sources */,
+				D9131A2A14A6A24600EF9073 /* TBAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D9131A2E14A6A24700EF9073 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D9131A4114A6A24700EF9073 /* tinderboxTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D9131A3814A6A24700EF9073 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D9131A1114A6A24600EF9073 /* tinderbox */;
+			targetProxy = D9131A3714A6A24700EF9073 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D9131A1F14A6A24600EF9073 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D9131A2014A6A24600EF9073 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D9131A2514A6A24600EF9073 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D9131A2614A6A24600EF9073 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		D9131A2B14A6A24600EF9073 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D9131A2C14A6A24600EF9073 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		D9131A3C14A6A24700EF9073 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D9131A3D14A6A24700EF9073 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D9131A4214A6A24700EF9073 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D9131A4314A6A24700EF9073 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D9131A4514A6A24700EF9073 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "tinderbox/tinderbox-Prefix.pch";
+				INFOPLIST_FILE = "tinderbox/tinderbox-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D9131A4614A6A24700EF9073 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "tinderbox/tinderbox-Prefix.pch";
+				INFOPLIST_FILE = "tinderbox/tinderbox-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		D9131A4814A6A24700EF9073 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/tinderbox.app/Contents/MacOS/tinderbox";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "tinderbox/tinderbox-Prefix.pch";
+				INFOPLIST_FILE = "tinderboxTests/tinderboxTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D9131A4914A6A24700EF9073 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/tinderbox.app/Contents/MacOS/tinderbox";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "tinderbox/tinderbox-Prefix.pch";
+				INFOPLIST_FILE = "tinderboxTests/tinderboxTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D9131A0C14A6A24600EF9073 /* Build configuration list for PBXProject "tinderbox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D9131A4214A6A24700EF9073 /* Debug */,
+				D9131A4314A6A24700EF9073 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D9131A4414A6A24700EF9073 /* Build configuration list for PBXNativeTarget "tinderbox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D9131A4514A6A24700EF9073 /* Debug */,
+				D9131A4614A6A24700EF9073 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D9131A4714A6A24700EF9073 /* Build configuration list for PBXNativeTarget "tinderboxTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D9131A4814A6A24700EF9073 /* Debug */,
+				D9131A4914A6A24700EF9073 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D9131A0914A6A24600EF9073 /* Project object */;
+}
