@@ -6,7 +6,7 @@ tinderbox is native Mac client for Campfire.
 
 ## About
 
-tinderbox is written with Cocoa, but hosts a [node.js](http://www.nodejs.org/) server running the background to serve up layout and content over a UNIX socket. This avoids the nasty side effects of running two copies at the same time or opening up TCP sockets that cause annoying headaches with firewalls and security software. 
+tinderbox is written with Cocoa, but hosts a [node.js](http://www.nodejs.org/) server running the background to serve up layout and content over a UNIX socket. This avoids the nasty side effects of running two copies at the same time under different users or by opening up TCP sockets that cause annoying headaches with firewall, VPN, and other security software. 
 
 Behind the scenes it makes use of [express](http://expressjs.com/), [coffee-script](http://coffeescript.org/), and ejs to render up content inside the app. 
 
