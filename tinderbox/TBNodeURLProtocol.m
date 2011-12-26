@@ -148,7 +148,8 @@ static NSThread *listenerThread;
     else {
         [[self client] URLProtocol:self didLoadData:[_readBuffer copy]];
         _readLength += [_readBuffer length];
-        _readBuffer = [NSMutableData data];
+        
+        _readBuffer = [NSMutableData data]; //reset read buffer in this mode
 
         if (_readLength >= _expectedLength) {
             [[self client] URLProtocolDidFinishLoading:self];
@@ -205,27 +206,8 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
             }
             else {
                 NSData *data = [NSData dataWithBytes:buf length:len];
-                proto->_readLength += [data length];
-                
-                [[proto client] URLProtocol:proto didLoadData:data];
-                
-                if (proto->_readLength == proto->_expectedLength)
-                {
-                    [[proto client] URLProtocolDidFinishLoading:proto];
-                    [proto close];
-                }
-                
-                if (proto->_readLength == proto->_expectedLength) {
-                    [[proto client] URLProtocolDidFinishLoading:proto];
-                    [proto close];
-                }
-                else if ([proto->_transferEncoding isEqualToString:@"chunked"]){
-                    if ([[[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] hasSuffix:@"0\r\n\r\n"]){
-                        [[proto client] URLProtocolDidFinishLoading:proto];
-                        [proto close];
-                    }
-                }
-                
+                [proto->_readBuffer appendData:data];
+                [proto parseReadBuffer];
             }
         }
     }

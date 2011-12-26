@@ -11,15 +11,23 @@ app.use(express.logger());
 app.use(express.bodyParser());
 
 app.get('/', function(req, res){
-        res.send('hello world');
-        });
+    res.send('I\'m awesome!');
+});
 
+
+app.get('/main', function(req, res){
+    res.send('Something magic goes here.');
+});
+
+function startServer() {
+    app.listen(socketPath,function () {
+        console.log("OK");
+    });
+}
 
 fs.unlink(socketPath, function (err) {
-  if (err) throw err;
-  app.listen(socketPath,function () {
-    console.log("OK");
-  });
+  //if (err) throw err; don't care
+  startServer();
 });
 
 

@@ -20,14 +20,11 @@
 		D9131A4B14A6A28300EF9073 /* TinderWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9131A4A14A6A28300EF9073 /* TinderWindow.xib */; };
 		D9131A4E14A6A95900EF9073 /* TBTinderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A4D14A6A95900EF9073 /* TBTinderWindow.m */; };
 		D9131A5214A6AB0900EF9073 /* TBNodeServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A5114A6AB0900EF9073 /* TBNodeServer.m */; };
-		D9131AE114A7017A00EF9073 /* node in CopyFiles */ = {isa = PBXBuildFile; fileRef = D9131A5514A6FF5300EF9073 /* node */; };
-		D9131AE414A7047700EF9073 /* server.js in Sources */ = {isa = PBXBuildFile; fileRef = D9131AE314A7047700EF9073 /* server.js */; };
-		D91323C214A70D6600EF9073 /* node_modules in Resources */ = {isa = PBXBuildFile; fileRef = D91323C114A70D6600EF9073 /* node_modules */; };
-		D91323C314A70D7400EF9073 /* package.json in Resources */ = {isa = PBXBuildFile; fileRef = D9131AE614A705A200EF9073 /* package.json */; };
 		D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */; };
 		D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */; };
 		D91323D914A8137000EF9073 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D91323D814A8137000EF9073 /* WebKit.framework */; };
-		D91323DA14A8521700EF9073 /* server.js in Resources */ = {isa = PBXBuildFile; fileRef = D9131AE314A7047700EF9073 /* server.js */; };
+		D91323DC14A86FC700EF9073 /* server in Resources */ = {isa = PBXBuildFile; fileRef = D91323DB14A86FC700EF9073 /* server */; };
+		D91323DE14A8700200EF9073 /* node in Resources */ = {isa = PBXBuildFile; fileRef = D91323DD14A8700100EF9073 /* node */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,19 +36,6 @@
 			remoteInfo = tinderbox;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D9131AE014A7016200EF9073 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = node/bin;
-			dstSubfolderSpec = 7;
-			files = (
-				D9131AE114A7017A00EF9073 /* node in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D9131A1214A6A24600EF9073 /* tinderbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tinderbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,15 +62,13 @@
 		D9131A4D14A6A95900EF9073 /* TBTinderWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBTinderWindow.m; sourceTree = "<group>"; };
 		D9131A5014A6AB0900EF9073 /* TBNodeServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeServer.h; sourceTree = "<group>"; };
 		D9131A5114A6AB0900EF9073 /* TBNodeServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeServer.m; sourceTree = "<group>"; };
-		D9131A5514A6FF5300EF9073 /* node */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = node; sourceTree = "<group>"; };
-		D9131AE314A7047700EF9073 /* server.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = server.js; sourceTree = "<group>"; };
-		D9131AE614A705A200EF9073 /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
-		D91323C114A70D6600EF9073 /* node_modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = node_modules; sourceTree = "<group>"; };
 		D91323C514A7DF9A00EF9073 /* NSFileManager+TB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+TB.h"; path = "tinderbox/NSFileManager+TB.h"; sourceTree = "<group>"; };
 		D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+TB.m"; path = "tinderbox/NSFileManager+TB.m"; sourceTree = "<group>"; };
 		D91323CA14A7EFC400EF9073 /* TBNodeURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeURLProtocol.h; sourceTree = "<group>"; };
 		D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeURLProtocol.m; sourceTree = "<group>"; };
 		D91323D814A8137000EF9073 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		D91323DB14A86FC700EF9073 /* server */ = {isa = PBXFileReference; lastKnownFileType = folder; name = server; path = ../res/server; sourceTree = "<group>"; };
+		D91323DD14A8700100EF9073 /* node */ = {isa = PBXFileReference; lastKnownFileType = folder; name = node; path = res/node; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,41 +182,13 @@
 		D9131A4F14A6A9C900EF9073 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D9131AE514A7047F00EF9073 /* server */,
-				D9131A5314A6FF5300EF9073 /* node */,
+				D91323DD14A8700100EF9073 /* node */,
+				D91323DB14A86FC700EF9073 /* server */,
 				D9131A2B14A6A24600EF9073 /* MainMenu.xib */,
 				D9131A4A14A6A28300EF9073 /* TinderWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
-		};
-		D9131A5314A6FF5300EF9073 /* node */ = {
-			isa = PBXGroup;
-			children = (
-				D9131A5414A6FF5300EF9073 /* bin */,
-			);
-			name = node;
-			path = ../res/node;
-			sourceTree = "<group>";
-		};
-		D9131A5414A6FF5300EF9073 /* bin */ = {
-			isa = PBXGroup;
-			children = (
-				D9131A5514A6FF5300EF9073 /* node */,
-			);
-			path = bin;
-			sourceTree = "<group>";
-		};
-		D9131AE514A7047F00EF9073 /* server */ = {
-			isa = PBXGroup;
-			children = (
-				D91323C114A70D6600EF9073 /* node_modules */,
-				D9131AE314A7047700EF9073 /* server.js */,
-				D9131AE614A705A200EF9073 /* package.json */,
-			);
-			name = server;
-			path = res/server;
-			sourceTree = SOURCE_ROOT;
 		};
 		D91323C814A7E07500EF9073 /* Server */ = {
 			isa = PBXGroup;
@@ -267,7 +221,6 @@
 				D9131A0E14A6A24600EF9073 /* Sources */,
 				D9131A0F14A6A24600EF9073 /* Frameworks */,
 				D9131A1014A6A24600EF9073 /* Resources */,
-				D9131AE014A7016200EF9073 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -333,9 +286,8 @@
 				D9131A2714A6A24600EF9073 /* Credits.rtf in Resources */,
 				D9131A2D14A6A24600EF9073 /* MainMenu.xib in Resources */,
 				D9131A4B14A6A28300EF9073 /* TinderWindow.xib in Resources */,
-				D91323C314A70D7400EF9073 /* package.json in Resources */,
-				D91323DA14A8521700EF9073 /* server.js in Resources */,
-				D91323C214A70D6600EF9073 /* node_modules in Resources */,
+				D91323DC14A86FC700EF9073 /* server in Resources */,
+				D91323DE14A8700200EF9073 /* node in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +326,6 @@
 				D9131A2A14A6A24600EF9073 /* TBAppDelegate.m in Sources */,
 				D9131A4E14A6A95900EF9073 /* TBTinderWindow.m in Sources */,
 				D9131A5214A6AB0900EF9073 /* TBNodeServer.m in Sources */,
-				D9131AE414A7047700EF9073 /* server.js in Sources */,
 				D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */,
 				D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */,
 			);

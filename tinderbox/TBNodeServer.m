@@ -34,7 +34,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     static TBNodeServer *sharedServer;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedServer = [[TBNodeServer alloc] initWithScriptPath:@"server.js"];
+        sharedServer = [[TBNodeServer alloc] initWithScriptPath:@"app.js"];
     });
     return sharedServer;
 }
@@ -58,7 +58,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
 }
 
 + (NSURL *)scriptDirectory {
-    return [[[NSBundle mainBundle] bundleURL] URLByAppendingPathComponent:@"Contents/Resources" isDirectory:YES];
+    return [[[NSBundle mainBundle] bundleURL] URLByAppendingPathComponent:@"Contents/Resources/server" isDirectory:YES];
 }
 
 - (NSString *)serverSocketPath {
