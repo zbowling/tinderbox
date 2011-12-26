@@ -69,6 +69,7 @@
 		D91323D814A8137000EF9073 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D91323DB14A86FC700EF9073 /* server */ = {isa = PBXFileReference; lastKnownFileType = folder; name = server; path = ../res/server; sourceTree = "<group>"; };
 		D91323DD14A8700100EF9073 /* node */ = {isa = PBXFileReference; lastKnownFileType = folder; name = node; path = res/node; sourceTree = SOURCE_ROOT; };
+		D91323E014A883D600EF9073 /* WebInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebInspector.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +137,7 @@
 		D9131A1C14A6A24600EF9073 /* tinderbox */ = {
 			isa = PBXGroup;
 			children = (
+				D91323DF14A883C500EF9073 /* External */,
 				D91323C914A7E08600EF9073 /* Categories */,
 				D91323C814A7E07500EF9073 /* Server */,
 				D9131A2814A6A24600EF9073 /* TBAppDelegate.h */,
@@ -209,6 +211,14 @@
 			);
 			name = Categories;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		D91323DF14A883C500EF9073 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				D91323E014A883D600EF9073 /* WebInspector.h */,
+			);
+			name = External;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

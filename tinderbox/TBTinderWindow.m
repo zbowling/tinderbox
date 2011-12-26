@@ -7,8 +7,13 @@
 //
 
 #import "TBTinderWindow.h"
+#if DEBUG
+#import "WebInspector.h"
+#endif
 
-@implementation TBTinderWindow
+@implementation TBTinderWindow {
+    WebInspector *_webInspector;
+}
 @synthesize webView=_webView;
 
 - (id)init
@@ -21,15 +26,35 @@
     return self;
 }
 
+- (IBAction)showConsole:(id)sender {
+    if(!_webInspector) {
+        _webInspector = [[WebInspector alloc] initWithWebView:self.webView];
+        [_webInspector detach:self.webView];
+    }
+    
+    [_webInspector showConsole:self.webView];
+}
+
+
+- (IBAction)hideConsole:(id)sender {
+    if(!_webInspector) {
+        _webInspector = [[WebInspector alloc] initWithWebView:self.webView];
+        [_webInspector detach:self.webView];
+    }
+    
+    [_webInspector show:self.webView];
+}
+
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    self.webView.frameLoadDelegate = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL: [NSURL URLWithString:@"tinderbox:///main"]]];
     });
+    [self becomeFirstResponder];
 
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
 - (void)webView:(WebView *)sender resource:(id)identifier didFailLoadingWithError:(NSError *)error fromDataSource:(WebDataSource *)dataSource {
@@ -42,7 +67,6 @@
 
 - (void)webView:(WebView *)sender resource:(id)identifier didReceiveContentLength:(NSUInteger)length fromDataSource:(WebDataSource *)dataSource {
     NSLog(@"didReceiveContentLength %lu",length);
-    
 }
 
 

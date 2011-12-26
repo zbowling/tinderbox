@@ -8,6 +8,14 @@ var express = require('express');
 var app = express.createServer();
 app.use(express.logger());
 app.use(express.bodyParser());
+app.use(express.static(__dirname + '/static',{ maxAge: 0 }));
+app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+app.register('.html', require('ejs'));
+app.set('view engine','html');
+app.set('view options', {
+    open: '{{',
+    close: '}}'
+});
 
 require('./routes').routes(app);
 

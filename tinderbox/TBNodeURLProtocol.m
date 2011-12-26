@@ -99,17 +99,23 @@ static NSThread *listenerThread;
 
 }
 
+- (id) initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)cachedResponse client:(id<NSURLProtocolClient>)client {
+    self = [super initWithRequest:request cachedResponse:cachedResponse client:client];
+    if (self) {
+        _byteIndex = 0;
+        _responseMessage = NULL;
+        _writeStream = NULL;
+        _readStream = NULL;
+        _readBuffer = [NSMutableData data];
+    }
+    return self;
+}
+
 
 
 
 - (void)startLoading {
-    _byteIndex = 0;
     _responseMessage = CFHTTPMessageCreateEmpty(kCFAllocatorDefault, TRUE);
-    _writeStream = NULL;
-    _readStream = NULL;
-    
-    _readBuffer = [NSMutableData data];
-    
     NSURLRequest *request = [self request];
     id<NSURLProtocolClient> client = [self client];
     
@@ -326,19 +332,19 @@ static void CFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType ty
 
 
 - (void)close {
-    if (_readStream)
+    if (_readStream != NULL)
     {
         CFReadStreamUnscheduleFromRunLoop(_readStream, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
         CFReadStreamClose(_readStream),_readStream = NULL;
     }
     
-    if (_writeStream)
+    if (_writeStream != NULL)
     {
         CFWriteStreamUnscheduleFromRunLoop(_writeStream, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
         CFWriteStreamClose(_writeStream),_writeStream = NULL;
     }
     
-    if (_responseMessage)
+    if (_responseMessage != NULL)
     {
         CFRelease(_responseMessage), _responseMessage=NULL;
     }
