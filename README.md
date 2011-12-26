@@ -27,6 +27,8 @@ If you want to rebuild node, it's as easy as this:
 ```bash
   cd vendor/node
   ./configure --without-npm --prefix=$PWD/../../res/node/
+  make
+  make install
 ```
 
 I remove the `lib/`, `shared/` and `include/` directories and the `bin/node-waf` file because they are not necessary to run just node and bundling adds dead weight. (TODO: automate)
