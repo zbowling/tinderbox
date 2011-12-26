@@ -12,9 +12,9 @@ Behind the scenes it makes use of [express](http://expressjs.com/), [coffee-scri
 
 ## Motivation
 
-Native campfire apps for the Mac all have serious issues. Very few of them are Open Source so I can't fix them. Campfire is natively a web experience so using a web based framework for interacting with it makes sense but at the same time it's still a not native Cocoa app. 
+Native campfire apps for the Mac all have serious issues. Very few of them are open source so I can't fix them. Campfire is natively a web experience so using a framework that is native to the web and filling in on the details with native Cocoa seemed to be the best option. 
 
-I could of written this entire in Objective-C, but it's a side project. Writing new OAuth code for Campfire, custom Campfire long polling code, and a bunch of HTML code in Objective-C didn't seem like a good use my time. Using existing Javascript code and libraries for Campfire, rendering HTML with frameworks built to render HTML already, and using a server that can handle long polling really well already (node), this solution really seems to make a lot of sense in my book.
+Sure, I could of written this entire in Objective-C, but it's a free-time project. Writing new OAuth code for Campfire and custom Campfire long polling code and a bunch of HTML render code in Objective-C didn't seem like a good use my time. However, using Node behind Cocoa means I can use existing Javascript code and libraries for Campfire, render HTML with frameworks built to render HTML brilliantly already, and use a server that can handle long polling really well. That's a win in my book.  
 
 ## Building
 
