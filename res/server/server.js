@@ -1,10 +1,13 @@
-var app = require('express').createServer();
+//we listen on this socket
+var socketPath = process.argv[2];
 
-console.log("hello")
+var app = require('express').createServer();
 
 app.get('/', function(req, res){
         res.send('hello world');
         });
 
-app.listen(3000);
+app.listen(socketPath);
+
+console.log(socketPath);
 

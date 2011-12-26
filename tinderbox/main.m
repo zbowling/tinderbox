@@ -3,7 +3,7 @@
 //  tinderbox
 //
 //  Created by Zac Bowling on 12/24/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2011 Zac Bowling. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

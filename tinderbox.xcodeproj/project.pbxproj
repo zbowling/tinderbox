@@ -24,7 +24,9 @@
 		D9131AE414A7047700EF9073 /* server.js in Sources */ = {isa = PBXBuildFile; fileRef = D9131AE314A7047700EF9073 /* server.js */; };
 		D91323C214A70D6600EF9073 /* node_modules in Resources */ = {isa = PBXBuildFile; fileRef = D91323C114A70D6600EF9073 /* node_modules */; };
 		D91323C314A70D7400EF9073 /* package.json in Resources */ = {isa = PBXBuildFile; fileRef = D9131AE614A705A200EF9073 /* package.json */; };
-		D91323C414A70D7B00EF9073 /* server.js in Resources */ = {isa = PBXBuildFile; fileRef = D9131AE314A7047700EF9073 /* server.js */; };
+		D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */; };
+		D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */; };
+		D91323D914A8137000EF9073 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D91323D814A8137000EF9073 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +90,11 @@
 		D9131AE314A7047700EF9073 /* server.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = server.js; sourceTree = "<group>"; };
 		D9131AE614A705A200EF9073 /* package.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		D91323C114A70D6600EF9073 /* node_modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = node_modules; sourceTree = "<group>"; };
+		D91323C514A7DF9A00EF9073 /* NSFileManager+TB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+TB.h"; path = "tinderbox/NSFileManager+TB.h"; sourceTree = "<group>"; };
+		D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+TB.m"; path = "tinderbox/NSFileManager+TB.m"; sourceTree = "<group>"; };
+		D91323CA14A7EFC400EF9073 /* TBNodeURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeURLProtocol.h; sourceTree = "<group>"; };
+		D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeURLProtocol.m; sourceTree = "<group>"; };
+		D91323D814A8137000EF9073 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D91323D914A8137000EF9073 /* WebKit.framework in Frameworks */,
 				D9131A1714A6A24600EF9073 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,6 +141,7 @@
 		D9131A1514A6A24600EF9073 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D91323D814A8137000EF9073 /* WebKit.framework */,
 				D9131A1614A6A24600EF9073 /* Cocoa.framework */,
 				D9131A3414A6A24700EF9073 /* SenTestingKit.framework */,
 				D9131A1814A6A24600EF9073 /* Other Frameworks */,
@@ -153,12 +162,12 @@
 		D9131A1C14A6A24600EF9073 /* tinderbox */ = {
 			isa = PBXGroup;
 			children = (
+				D91323C914A7E08600EF9073 /* Categories */,
+				D91323C814A7E07500EF9073 /* Server */,
 				D9131A2814A6A24600EF9073 /* TBAppDelegate.h */,
 				D9131A2914A6A24600EF9073 /* TBAppDelegate.m */,
 				D9131A4C14A6A95900EF9073 /* TBTinderWindow.h */,
 				D9131A4D14A6A95900EF9073 /* TBTinderWindow.m */,
-				D9131A5014A6AB0900EF9073 /* TBNodeServer.h */,
-				D9131A5114A6AB0900EF9073 /* TBNodeServer.m */,
 				D9131A4F14A6A9C900EF9073 /* Resources */,
 				D9131A1D14A6A24600EF9073 /* Supporting Files */,
 			);
@@ -235,6 +244,27 @@
 			path = res/server;
 			sourceTree = SOURCE_ROOT;
 		};
+		D91323C814A7E07500EF9073 /* Server */ = {
+			isa = PBXGroup;
+			children = (
+				D9131A5014A6AB0900EF9073 /* TBNodeServer.h */,
+				D9131A5114A6AB0900EF9073 /* TBNodeServer.m */,
+				D91323CA14A7EFC400EF9073 /* TBNodeURLProtocol.h */,
+				D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */,
+			);
+			name = Server;
+			sourceTree = "<group>";
+		};
+		D91323C914A7E08600EF9073 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				D91323C514A7DF9A00EF9073 /* NSFileManager+TB.h */,
+				D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */,
+			);
+			name = Categories;
+			path = ..;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -283,6 +313,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Zac Bowling";
 			};
 			buildConfigurationList = D9131A0C14A6A24600EF9073 /* Build configuration list for PBXProject "tinderbox" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -311,7 +342,6 @@
 				D9131A2714A6A24600EF9073 /* Credits.rtf in Resources */,
 				D9131A2D14A6A24600EF9073 /* MainMenu.xib in Resources */,
 				D9131A4B14A6A28300EF9073 /* TinderWindow.xib in Resources */,
-				D91323C414A70D7B00EF9073 /* server.js in Resources */,
 				D91323C314A70D7400EF9073 /* package.json in Resources */,
 				D91323C214A70D6600EF9073 /* node_modules in Resources */,
 			);
@@ -353,6 +383,8 @@
 				D9131A4E14A6A95900EF9073 /* TBTinderWindow.m in Sources */,
 				D9131A5214A6AB0900EF9073 /* TBNodeServer.m in Sources */,
 				D9131AE414A7047700EF9073 /* server.js in Sources */,
+				D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */,
+				D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
