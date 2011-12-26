@@ -22,9 +22,10 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
 
 @implementation TBNodeServer {
     NSTask *_task;
-    
+    NSFileHandle *_outFile;
+    NSFileHandle *_errFile;
     NSString *_scriptPath;
-    
+    NSMutableString *_outputBuffer;
     BOOL _shouldStop;
 }
 
@@ -43,6 +44,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     if (self) {
         _scriptPath = scriptPath;
         _shouldStop = NO;
+        _outputBuffer = [NSMutableString string];
         if ([self isServerRunning]) {
             [self stopServer];
         }
@@ -78,16 +80,6 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     return NO;
 }
 
-
-- (int)runningServerFileDescriptor {
-    if ([self isServerRunning]) {
-        return [[NSFileHandle fileHandleForWritingAtPath:[self serverSocketPath]] fileDescriptor];
-    }
-    else {
-        return 0;
-    }
-}
-
 - (void)writeTaskProcessIdentiferToDisk {
     NSError *error;
     if (![[NSString stringWithFormat:@"%i",[_task processIdentifier]] writeToFile:[self serverPidFilePath] atomically:YES encoding:NSASCIIStringEncoding error:&error]) {
@@ -112,8 +104,40 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     return [pidString intValue];
 }
 
-- (void)startServer {
+
+-(void) appendDataFrom:(NSFileHandle*)fileHandle to:(NSMutableString*)output
+{
     
+    NSData *data = [fileHandle availableData];
+    if ([data length]) {
+        NSString *s = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding: NSUTF8StringEncoding];
+        [output appendString:s];
+    }
+}
+
+-(void) outData: (NSNotification *) notification
+{
+    NSMutableString *output = [NSMutableString string];
+    NSFileHandle *fileHandle = (NSFileHandle*) [notification object];
+    [self appendDataFrom:fileHandle to:output];
+    if ([output hasPrefix:@"OK"])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:TBNodeServerDidStartNotification object:self userInfo:nil];
+    }
+    NSLog(@"%@",output);
+    [fileHandle waitForDataInBackgroundAndNotify];
+}
+
+-(void) errData: (NSNotification *) notification
+{
+    NSMutableString *output = [NSMutableString string];
+    NSFileHandle *fileHandle = (NSFileHandle*) [notification object];
+    [self appendDataFrom:fileHandle to:output];
+    NSLog(@"%@",output);
+    [fileHandle waitForDataInBackgroundAndNotify];
+}
+
+- (void)startServer {
     NSString *fullScriptPath = [[[[self class] scriptDirectory] URLByAppendingPathComponent:_scriptPath] path];
     
     _task = [[NSTask alloc] init];
@@ -123,15 +147,35 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
                        fullScriptPath,
                        [self serverSocketPath],
                        nil];
-#if DEBUG
-    _task.standardInput = [NSFileHandle fileHandleWithStandardInput];
-    _task.standardOutput = [NSFileHandle fileHandleWithStandardOutput];
-    _task.standardError = [NSFileHandle fileHandleWithStandardError];
-#endif
     
+    NSPipe *inPipe = [NSPipe pipe];
+    NSPipe *outPipe = [NSPipe pipe];
+    NSPipe *errPipe = [NSPipe pipe];
+
+    _task.standardInput = inPipe;
+    _task.standardOutput = outPipe;
+    _task.standardError = errPipe;
+    
+    
+    _outFile = [outPipe fileHandleForReading];
+    _errFile = [errPipe fileHandleForReading];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(outData:)
+                                                 name:NSFileHandleDataAvailableNotification
+                                               object:_outFile];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(errData:)
+                                                 name:NSFileHandleDataAvailableNotification
+                                               object:_errFile];
+    
+    [_outFile waitForDataInBackgroundAndNotify];
+    [_errFile waitForDataInBackgroundAndNotify];
+
     
     [_task launch];
-    sleep(3);
+    
     [self writeTaskProcessIdentiferToDisk];
 }
 

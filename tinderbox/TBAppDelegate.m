@@ -21,8 +21,10 @@
 {
     [TBNodeServer sharedServer];
     [NSURLProtocol registerClass:[TBNodeURLProtocol class]];
-    _first = [[TBTinderWindow alloc] init];
-    [_first showWindow:self];
+    [[NSNotificationCenter defaultCenter] addObserverForName:TBNodeServerDidStartNotification object:[TBNodeServer sharedServer] queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification *note) {
+        _first = [[TBTinderWindow alloc] init];
+        [_first showWindow:self];
+    }];
     
     
 }

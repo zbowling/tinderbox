@@ -27,6 +27,7 @@
 		D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */; };
 		D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */; };
 		D91323D914A8137000EF9073 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D91323D814A8137000EF9073 /* WebKit.framework */; };
+		D91323DA14A8521700EF9073 /* server.js in Resources */ = {isa = PBXBuildFile; fileRef = D9131AE314A7047700EF9073 /* server.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,15 +48,6 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D9131AE114A7017A00EF9073 /* node in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D913209D14A70C6E00EF9073 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +268,6 @@
 				D9131A0F14A6A24600EF9073 /* Frameworks */,
 				D9131A1014A6A24600EF9073 /* Resources */,
 				D9131AE014A7016200EF9073 /* CopyFiles */,
-				D913209D14A70C6E00EF9073 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -343,6 +334,7 @@
 				D9131A2D14A6A24600EF9073 /* MainMenu.xib in Resources */,
 				D9131A4B14A6A28300EF9073 /* TinderWindow.xib in Resources */,
 				D91323C314A70D7400EF9073 /* package.json in Resources */,
+				D91323DA14A8521700EF9073 /* server.js in Resources */,
 				D91323C214A70D6600EF9073 /* node_modules in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
