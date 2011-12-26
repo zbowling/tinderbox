@@ -9,10 +9,10 @@
 #import "TBAppDelegate.h"
 #import "TBNodeServer.h"
 #import "TBNodeURLProtocol.h"
-#import "TBTinderWindow.h"
+#import "TBNodeWindowController.h"
 
 @implementation TBAppDelegate {
-    TBTinderWindow *_first;
+    TBNodeWindowController *_first;
 }
 
 
@@ -22,7 +22,7 @@
     [TBNodeServer sharedServer];
     [NSURLProtocol registerClass:[TBNodeURLProtocol class]];
     [[NSNotificationCenter defaultCenter] addObserverForName:TBNodeServerDidStartNotification object:[TBNodeServer sharedServer] queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification *note) {
-        _first = [[TBTinderWindow alloc] init];
+        _first = [[TBNodeWindowController alloc] initWithWindowNibName:nil defaultURL:[NSURL URLWithString:@"tinderbox:///main"]];
         [_first showWindow:self];
     }];
     

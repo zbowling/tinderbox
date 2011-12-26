@@ -6,21 +6,24 @@
 //  Copyright (c) 2011 Zac Bowling. All rights reserved.
 //
 
-#import "TBTinderWindow.h"
-#if DEBUG
+#import "TBNodeWindowController.h"
 #import "WebInspector.h"
-#endif
+#import "TBWebView.h"
 
-@implementation TBTinderWindow {
+@implementation TBNodeWindowController {
     WebInspector *_webInspector;
+    NSURL *_defaultURL;
 }
 @synthesize webView=_webView;
 
-- (id)init
+- (id)initWithWindowNibName:(NSString *)windowNibNameOrNil defaultURL:(NSURL *)defaultURL
 {
-    self = [super initWithWindowNibName:@"TinderWindow"];
+    if (!windowNibNameOrNil)
+        windowNibNameOrNil = @"BasicWebWindow";
+    
+    self = [super initWithWindowNibName:windowNibNameOrNil];
     if (self) {
-        // Initialization code here.
+        _defaultURL = defaultURL;
     }
     
     return self;
@@ -51,7 +54,7 @@
     [super windowDidLoad];
     self.webView.frameLoadDelegate = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL: [NSURL URLWithString:@"tinderbox:///main"]]];
+        [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL:_defaultURL]];
     });
     [self becomeFirstResponder];
 

@@ -17,14 +17,16 @@
 		D9131A3614A6A24700EF9073 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9131A1614A6A24600EF9073 /* Cocoa.framework */; };
 		D9131A3E14A6A24700EF9073 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D9131A3C14A6A24700EF9073 /* InfoPlist.strings */; };
 		D9131A4114A6A24700EF9073 /* tinderboxTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A4014A6A24700EF9073 /* tinderboxTests.m */; };
-		D9131A4B14A6A28300EF9073 /* TinderWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9131A4A14A6A28300EF9073 /* TinderWindow.xib */; };
-		D9131A4E14A6A95900EF9073 /* TBTinderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A4D14A6A95900EF9073 /* TBTinderWindow.m */; };
+		D9131A4B14A6A28300EF9073 /* BasicWebWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9131A4A14A6A28300EF9073 /* BasicWebWindow.xib */; };
+		D9131A4E14A6A95900EF9073 /* TBNodeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A4D14A6A95900EF9073 /* TBNodeWindowController.m */; };
 		D9131A5214A6AB0900EF9073 /* TBNodeServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A5114A6AB0900EF9073 /* TBNodeServer.m */; };
 		D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */; };
 		D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */; };
 		D91323D914A8137000EF9073 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D91323D814A8137000EF9073 /* WebKit.framework */; };
 		D91323DC14A86FC700EF9073 /* server in Resources */ = {isa = PBXBuildFile; fileRef = D91323DB14A86FC700EF9073 /* server */; };
 		D91323DE14A8700200EF9073 /* node in Resources */ = {isa = PBXBuildFile; fileRef = D91323DD14A8700100EF9073 /* node */; };
+		D91323E414A89CE700EF9073 /* TBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323E314A89CE700EF9073 /* TBWebView.m */; };
+		D91323E714A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,9 +59,9 @@
 		D9131A3D14A6A24700EF9073 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D9131A3F14A6A24700EF9073 /* tinderboxTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinderboxTests.h; sourceTree = "<group>"; };
 		D9131A4014A6A24700EF9073 /* tinderboxTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tinderboxTests.m; sourceTree = "<group>"; };
-		D9131A4A14A6A28300EF9073 /* TinderWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TinderWindow.xib; sourceTree = "<group>"; };
-		D9131A4C14A6A95900EF9073 /* TBTinderWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBTinderWindow.h; sourceTree = "<group>"; };
-		D9131A4D14A6A95900EF9073 /* TBTinderWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBTinderWindow.m; sourceTree = "<group>"; };
+		D9131A4A14A6A28300EF9073 /* BasicWebWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BasicWebWindow.xib; sourceTree = "<group>"; };
+		D9131A4C14A6A95900EF9073 /* TBNodeWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeWindowController.h; sourceTree = "<group>"; };
+		D9131A4D14A6A95900EF9073 /* TBNodeWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeWindowController.m; sourceTree = "<group>"; };
 		D9131A5014A6AB0900EF9073 /* TBNodeServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeServer.h; sourceTree = "<group>"; };
 		D9131A5114A6AB0900EF9073 /* TBNodeServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeServer.m; sourceTree = "<group>"; };
 		D91323C514A7DF9A00EF9073 /* NSFileManager+TB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+TB.h"; path = "tinderbox/NSFileManager+TB.h"; sourceTree = "<group>"; };
@@ -70,6 +72,10 @@
 		D91323DB14A86FC700EF9073 /* server */ = {isa = PBXFileReference; lastKnownFileType = folder; name = server; path = ../res/server; sourceTree = "<group>"; };
 		D91323DD14A8700100EF9073 /* node */ = {isa = PBXFileReference; lastKnownFileType = folder; name = node; path = res/node; sourceTree = SOURCE_ROOT; };
 		D91323E014A883D600EF9073 /* WebInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebInspector.h; sourceTree = "<group>"; };
+		D91323E214A89CE700EF9073 /* TBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBWebView.h; sourceTree = "<group>"; };
+		D91323E314A89CE700EF9073 /* TBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebView.m; sourceTree = "<group>"; };
+		D91323E514A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBWebViewPreferencesScriptableObject.h; sourceTree = "<group>"; };
+		D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebViewPreferencesScriptableObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,13 +143,14 @@
 		D9131A1C14A6A24600EF9073 /* tinderbox */ = {
 			isa = PBXGroup;
 			children = (
+				D91323E114A89CC000EF9073 /* Views */,
 				D91323DF14A883C500EF9073 /* External */,
 				D91323C914A7E08600EF9073 /* Categories */,
 				D91323C814A7E07500EF9073 /* Server */,
 				D9131A2814A6A24600EF9073 /* TBAppDelegate.h */,
 				D9131A2914A6A24600EF9073 /* TBAppDelegate.m */,
-				D9131A4C14A6A95900EF9073 /* TBTinderWindow.h */,
-				D9131A4D14A6A95900EF9073 /* TBTinderWindow.m */,
+				D9131A4C14A6A95900EF9073 /* TBNodeWindowController.h */,
+				D9131A4D14A6A95900EF9073 /* TBNodeWindowController.m */,
 				D9131A4F14A6A9C900EF9073 /* Resources */,
 				D9131A1D14A6A24600EF9073 /* Supporting Files */,
 			);
@@ -187,7 +194,7 @@
 				D91323DD14A8700100EF9073 /* node */,
 				D91323DB14A86FC700EF9073 /* server */,
 				D9131A2B14A6A24600EF9073 /* MainMenu.xib */,
-				D9131A4A14A6A28300EF9073 /* TinderWindow.xib */,
+				D9131A4A14A6A28300EF9073 /* BasicWebWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -219,6 +226,17 @@
 				D91323E014A883D600EF9073 /* WebInspector.h */,
 			);
 			name = External;
+			sourceTree = "<group>";
+		};
+		D91323E114A89CC000EF9073 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D91323E214A89CE700EF9073 /* TBWebView.h */,
+				D91323E314A89CE700EF9073 /* TBWebView.m */,
+				D91323E514A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.h */,
+				D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,7 +313,7 @@
 				D9131A2114A6A24600EF9073 /* InfoPlist.strings in Resources */,
 				D9131A2714A6A24600EF9073 /* Credits.rtf in Resources */,
 				D9131A2D14A6A24600EF9073 /* MainMenu.xib in Resources */,
-				D9131A4B14A6A28300EF9073 /* TinderWindow.xib in Resources */,
+				D9131A4B14A6A28300EF9073 /* BasicWebWindow.xib in Resources */,
 				D91323DC14A86FC700EF9073 /* server in Resources */,
 				D91323DE14A8700200EF9073 /* node in Resources */,
 			);
@@ -334,10 +352,12 @@
 			files = (
 				D9131A2314A6A24600EF9073 /* main.m in Sources */,
 				D9131A2A14A6A24600EF9073 /* TBAppDelegate.m in Sources */,
-				D9131A4E14A6A95900EF9073 /* TBTinderWindow.m in Sources */,
+				D9131A4E14A6A95900EF9073 /* TBNodeWindowController.m in Sources */,
 				D9131A5214A6AB0900EF9073 /* TBNodeServer.m in Sources */,
 				D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */,
 				D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */,
+				D91323E414A89CE700EF9073 /* TBWebView.m in Sources */,
+				D91323E714A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

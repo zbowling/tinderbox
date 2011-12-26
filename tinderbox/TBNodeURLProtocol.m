@@ -188,8 +188,8 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                         NSInteger statusCode = CFHTTPMessageGetResponseStatusCode(proto->_responseMessage);
                         NSDictionary *headerFields = (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(proto->_responseMessage);
                         NSHTTPURLResponse *urlResponse = 
-                            [[NSHTTPURLResponse alloc] initWithURL:proto->_rewritenURL statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:headerFields];
-                        [[proto client] URLProtocol:proto didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+                            [[NSHTTPURLResponse alloc] initWithURL:proto->_rewritenURL statusCode:statusCode HTTPVersion:@"HTTP/1.0" headerFields:headerFields];
+                        [[proto client] URLProtocol:proto didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
                         NSLog(@"didReceiveResponse %@",urlResponse);
                         
                         proto->_transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
@@ -327,7 +327,14 @@ static void CFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType ty
 }
 
 - (void)stopLoading {
-    [self close];
+    if (dispatch_get_current_queue() == dispatch_get_main_queue()) {
+        [self close];
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self close];
+        });
+    }
 }
 
 

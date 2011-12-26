@@ -9,9 +9,12 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-@interface TBTinderWindow : NSWindowController 
+@class TBWebView;
+@interface TBNodeWindowController : NSWindowController 
 
-@property (weak) IBOutlet WebView *webView;
+- (id)initWithWindowNibName:(NSString *)windowNibNameOrNil defaultURL:(NSURL *)defaultURL;
+
+@property (weak) IBOutlet TBWebView *webView;
 
 - (IBAction)showConsole:(id)sender;
 - (IBAction)hideConsole:(id)sender;
