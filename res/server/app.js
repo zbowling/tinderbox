@@ -2,10 +2,27 @@ require("coffee-script");
 
 //we listen on this socket
 var socketPath = process.argv[2];
+
+process.stdout.setEncoding('utf8');
+
 var fs = require('fs');
 var express = require('express');
 
+var io = require('socket.io');
 var app = express.createServer();
+
+io = io.listen(app);
+
+io.configure(function () {
+  io.set('transports', ['websocket']);
+});
+
+io.sockets.on('connection', function (socket) {
+  console.log(socket);
+  socket.emit('news', { hello: 'world' });
+});
+
+
 app.use(app.router);
 app.use(express.logger());
 app.use(express.bodyParser());

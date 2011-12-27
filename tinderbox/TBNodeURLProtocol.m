@@ -58,6 +58,13 @@ static NSThread *listenerThread;
 }
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request {
+    
+    NSString *host = [[request URL] host];
+    if (host && [host caseInsensitiveCompare:@"tinderbox.local"] == NSOrderedSame)
+    {
+        return YES;
+    }
+    
     NSString *scheme = [[request URL] scheme];
     return ([scheme caseInsensitiveCompare: [self protocolScheme]] == NSOrderedSame );
 }
