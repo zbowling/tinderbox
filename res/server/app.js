@@ -6,8 +6,11 @@ var fs = require('fs');
 var express = require('express');
 
 var app = express.createServer();
+app.use(app.router);
 app.use(express.logger());
 app.use(express.bodyParser());
+app.use(express.cookieParser());
+app.use(express.session({ secret: "$ecret" }));
 app.use(express.static(__dirname + '/static',{ maxAge: 0 }));
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 app.register('.html', require('ejs'));

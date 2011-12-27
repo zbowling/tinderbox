@@ -127,7 +127,11 @@ static NSThread *listenerThread;
     CFHTTPMessageSetBody(httpRequest, (__bridge CFDataRef )request.HTTPBody);
     
     [request.allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *obj, BOOL *stop) {
-        CFHTTPMessageSetHeaderFieldValue(httpRequest, (__bridge CFStringRef )key, (__bridge CFStringRef )obj);
+        //ignore caching for now
+        if ([key caseInsensitiveCompare:@"If-Modified-Since"] != NSOrderedSame &&
+            [key caseInsensitiveCompare:@"If-None-Match"] != NSOrderedSame &&
+            [key caseInsensitiveCompare:@"Cache-Control"] != NSOrderedSame)
+            CFHTTPMessageSetHeaderFieldValue(httpRequest, (__bridge CFStringRef )key, (__bridge CFStringRef )obj);
     }];
     
     _requestData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(httpRequest);    
@@ -143,7 +147,7 @@ static NSThread *listenerThread;
 
 - (void) parseReadBuffer {
     
-    if (_transferEncoding && [_transferEncoding isEqualToString:@"chunked"]) {
+    if (_transferEncoding && [_transferEncoding caseInsensitiveCompare:@"chunked"] == NSOrderedSame) {
         //SUPPORT HTTP 1.1
         
         /*if ([[[NSString alloc] initWithData:currentBody encoding:NSASCIIStringEncoding] hasSuffix:@"0\r\n\r\n"]){
@@ -183,27 +187,60 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                 if (proto->_responseMessage != NULL){
                     CFHTTPMessageAppendBytes(proto->_responseMessage, buf, len);
                     if (CFHTTPMessageIsHeaderComplete(proto->_responseMessage)) {
-                        
                         proto->_hasHeader = YES;
+                        
+                        NSData *responseData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(proto->_responseMessage);    
+                        
+                        NSLog(@"response: %@",[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+                        
+                        
                         NSInteger statusCode = CFHTTPMessageGetResponseStatusCode(proto->_responseMessage);
                         NSDictionary *headerFields = (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(proto->_responseMessage);
                         NSHTTPURLResponse *urlResponse = 
-                            [[NSHTTPURLResponse alloc] initWithURL:proto->_rewritenURL statusCode:statusCode HTTPVersion:@"HTTP/1.0" headerFields:headerFields];
-                        [[proto client] URLProtocol:proto didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowedInMemoryOnly];
-                        NSLog(@"didReceiveResponse %@",urlResponse);
+                            [[NSHTTPURLResponse alloc] initWithURL:[[proto request] URL] statusCode:statusCode HTTPVersion:@"HTTP/1.0" headerFields:headerFields];
                         
-                        proto->_transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
-                        proto->_expectedLength = [urlResponse expectedContentLength];
-                        proto->_readLength = 0;
-                        
-                        NSData *currentBody = (__bridge_transfer NSData *)CFHTTPMessageCopyBody(proto->_responseMessage);
-                        
-                        if (currentBody) {
-                            [proto->_readBuffer appendData:currentBody];
-                            [proto parseReadBuffer];
+                        NSString *location = [headerFields objectForKey:@"Location"];
+                        if (((statusCode >= 301 && statusCode <= 303) || statusCode == 307) && location) {
+                            
+                            NSURL *url;
+                            url = [NSURL URLWithString:location];
+                            if (!url){
+                                //assume relative path
+                                url = [NSURL URLWithString:location relativeToURL:[NSURL URLWithString:@"tinderbox:/"]];
+                            }
+                            
+                            NSMutableURLRequest *request;
+                            
+                            if (statusCode == 301){
+                                //301s should reuse the same request.
+                                request = [[proto request] mutableCopy];
+                                [request setURL:url];
+                            } else {
+                                request = [[NSMutableURLRequest alloc] initWithURL:url];
+                            }
+                            
+                            [[proto client] URLProtocol:proto wasRedirectedToRequest:request redirectResponse:urlResponse];
+                            [[proto client] URLProtocolDidFinishLoading:proto];
+                            [proto close];
                         }
-                        
-                        NSLog(@"body: %@",[[NSString alloc] initWithData:currentBody encoding:NSUTF8StringEncoding]);
+                        else {
+                            [[proto client] URLProtocol:proto didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowed];
+                            NSLog(@"didReceiveResponse %@",urlResponse);
+                            
+                            proto->_transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
+                            proto->_expectedLength = [urlResponse expectedContentLength];
+                            proto->_readLength = 0;
+                            
+                            NSData *currentBody = (__bridge_transfer NSData *)CFHTTPMessageCopyBody(proto->_responseMessage);
+                            
+                            if (currentBody || [currentBody length] > 0) {
+                                [proto->_readBuffer appendData:currentBody];
+                                [proto parseReadBuffer];
+                            }
+                            
+                            NSLog(@"body: %@",[[NSString alloc] initWithData:currentBody encoding:NSUTF8StringEncoding]);
+                        }
+
                         
                         if (proto->_responseMessage)
                             CFRelease(proto->_responseMessage), proto->_responseMessage = NULL;

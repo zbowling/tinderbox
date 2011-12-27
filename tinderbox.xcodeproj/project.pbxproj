@@ -27,6 +27,7 @@
 		D91323DE14A8700200EF9073 /* node in Resources */ = {isa = PBXBuildFile; fileRef = D91323DD14A8700100EF9073 /* node */; };
 		D91323E414A89CE700EF9073 /* TBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323E314A89CE700EF9073 /* TBWebView.m */; };
 		D91323E714A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */; };
+		D91323E914A91F4500EF9073 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D91323E814A91F4500EF9073 /* Preferences.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		D91323E314A89CE700EF9073 /* TBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebView.m; sourceTree = "<group>"; };
 		D91323E514A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBWebViewPreferencesScriptableObject.h; sourceTree = "<group>"; };
 		D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebViewPreferencesScriptableObject.m; sourceTree = "<group>"; };
+		D91323E814A91F4500EF9073 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +197,7 @@
 				D91323DB14A86FC700EF9073 /* server */,
 				D9131A2B14A6A24600EF9073 /* MainMenu.xib */,
 				D9131A4A14A6A28300EF9073 /* BasicWebWindow.xib */,
+				D91323E814A91F4500EF9073 /* Preferences.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				D9131A4B14A6A28300EF9073 /* BasicWebWindow.xib in Resources */,
 				D91323DC14A86FC700EF9073 /* server in Resources */,
 				D91323DE14A8700200EF9073 /* node in Resources */,
+				D91323E914A91F4500EF9073 /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
