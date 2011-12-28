@@ -10,4 +10,6 @@
 
 @interface TBAppDelegate : NSObject <NSApplicationDelegate>
 
+- (void)showRoomWindowWithRoomID:(NSString *)roomID;
+
 @end

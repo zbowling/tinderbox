@@ -4,24 +4,11 @@ eco = require("eco");
 //we listen on this socket
 var socketPath = process.argv[2];
 
-process.stdout.setEncoding('utf8');
-
 var fs = require('fs');
 var express = require('express');
 
-var io = require('socket.io');
 var app = express.createServer();
 
-io = io.listen(app);
-
-io.configure(function () {
-  io.set('transports', ['websocket']);
-});
-
-io.sockets.on('connection', function (socket) {
-  console.log(socket);
-  socket.emit('news', { hello: 'world' });
-});
 
 
 
@@ -36,12 +23,13 @@ app.register('.html', eco);
 app.set('view engine','html');
 app.set('basepath',"http://tinderbox.local/")
 
-//Todo, move to utils
-String.prototype.trim = function () {
-    return this.replace(/^\s*/, "").replace(/\s*$/, "");
-}
+var io = require('socket.io').listen(app);
+//io.set('transports', ['htmlfile']);
 
-instance = {}
+instance = {};
+instance.io = io;
+
+require('./controllers/room').setup(app,instance);
 
 require('./routes').routes(app,instance);
 

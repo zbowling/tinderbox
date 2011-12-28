@@ -141,7 +141,7 @@ static NSThread *listenerThread;
     
     
     CFHTTPMessageRef httpRequest = CFHTTPMessageCreateRequest(kCFAllocatorDefault, (__bridge CFStringRef )request.HTTPMethod, (__bridge CFURLRef)_rewritenURL,
-                                                              kCFHTTPVersion1_1); //CHANGE TO kCFHTTPVersion1_1 later
+                                                              kCFHTTPVersion1_0); //CHANGE TO kCFHTTPVersion1_1 later
     
     CFHTTPMessageSetBody(httpRequest, (__bridge CFDataRef )request.HTTPBody);
     
@@ -155,7 +155,7 @@ static NSThread *listenerThread;
     
     _requestData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(httpRequest);    
     
-    //NSLog(@"request: %@",[[NSString alloc] initWithData:_requestData encoding:NSUTF8StringEncoding]);
+    NSLog(@"request: %@",[[NSString alloc] initWithData:_requestData encoding:NSUTF8StringEncoding]);
     
     
     if (![self connect]){
@@ -210,7 +210,7 @@ static NSThread *listenerThread;
         
         [_readBuffer replaceBytesInRange:NSMakeRange(0, [_readBuffer length]) withBytes:NULL length:0]; //reset read buffer in this mode
         
-        if (_readLength >= _expectedLength) {
+        if (_expectedLength != 0 && _readLength >= _expectedLength) {
             [[self client] URLProtocolDidFinishLoading:self];
             [self close];
         }
@@ -223,10 +223,10 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
 {
     TBNodeURLProtocol *proto = (__bridge TBNodeURLProtocol *)CFRetain(pInfo);
     if (type == kCFStreamEventOpenCompleted) {
-        //NSLog(@"read: kCFStreamEventOpenCompleted");
+        NSLog(@"read: kCFStreamEventOpenCompleted");
     }
     else if (type == kCFStreamEventHasBytesAvailable) {
-        //NSLog(@"read: kCFStreamEventHasBytesAvailable");
+        NSLog(@"read: kCFStreamEventHasBytesAvailable");
         uint8_t buf[1024];
         bzero(buf, 1024);
         NSUInteger len = 0;

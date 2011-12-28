@@ -28,6 +28,8 @@
 		D91323E414A89CE700EF9073 /* TBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323E314A89CE700EF9073 /* TBWebView.m */; };
 		D91323E714A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */; };
 		D91323E914A91F4500EF9073 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D91323E814A91F4500EF9073 /* Preferences.xib */; };
+		D91323EC14AACCF500EF9073 /* TBWebViewAppScriptableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */; };
+		D91323EF14AACE3500EF9073 /* TBRoomWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,10 @@
 		D91323E514A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBWebViewPreferencesScriptableObject.h; sourceTree = "<group>"; };
 		D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebViewPreferencesScriptableObject.m; sourceTree = "<group>"; };
 		D91323E814A91F4500EF9073 /* Preferences.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
+		D91323EA14AACCF500EF9073 /* TBWebViewAppScriptableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBWebViewAppScriptableObject.h; sourceTree = "<group>"; };
+		D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebViewAppScriptableObject.m; sourceTree = "<group>"; };
+		D91323ED14AACE3500EF9073 /* TBRoomWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBRoomWindowController.h; sourceTree = "<group>"; };
+		D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBRoomWindowController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +159,8 @@
 				D9131A2914A6A24600EF9073 /* TBAppDelegate.m */,
 				D9131A4C14A6A95900EF9073 /* TBNodeWindowController.h */,
 				D9131A4D14A6A95900EF9073 /* TBNodeWindowController.m */,
+				D91323ED14AACE3500EF9073 /* TBRoomWindowController.h */,
+				D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */,
 				D9131A4F14A6A9C900EF9073 /* Resources */,
 				D9131A1D14A6A24600EF9073 /* Supporting Files */,
 			);
@@ -238,6 +246,8 @@
 				D91323E314A89CE700EF9073 /* TBWebView.m */,
 				D91323E514A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.h */,
 				D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */,
+				D91323EA14AACCF500EF9073 /* TBWebViewAppScriptableObject.h */,
+				D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -362,6 +372,8 @@
 				D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */,
 				D91323E414A89CE700EF9073 /* TBWebView.m in Sources */,
 				D91323E714A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m in Sources */,
+				D91323EC14AACCF500EF9073 /* TBWebViewAppScriptableObject.m in Sources */,
+				D91323EF14AACE3500EF9073 /* TBRoomWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,9 @@
 #import "TBNodeWindowController.h"
 #import "WebInspector.h"
 #import "TBWebView.h"
+#import "TBWebViewPreferencesScriptableObject.h"
+#import "TBWebViewAppScriptableObject.h"
+
 
 @implementation TBNodeWindowController {
     WebInspector *_webInspector;
@@ -52,24 +55,30 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    self.webView.frameLoadDelegate = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL:_defaultURL]];
+        [[self webView] setFrameLoadDelegate:self];
     });
     [self becomeFirstResponder];
 
 }
 
+- (void)setupWebScriptableObjects {
+    // Create window.preferences object.
+    [[self.webView windowScriptObject] setValue:[TBWebViewPreferencesScriptableObject sharedObject] forKey:@"preferences"];
+    [[self.webView windowScriptObject] setValue:[TBWebViewAppScriptableObject sharedObject] forKey:@"tinderbox"];
+}
+
+- (void)webView:(WebView *)sender didClearWindowObject:(WebScriptObject *)windowObject forFrame:(WebFrame *)frame {
+    [self setupWebScriptableObjects];
+}
+
+- (void)webView:(WebView *)sender didFailLoadWithError:(NSError *)error forFrame:(WebFrame *)frame {
+    NSLog(@"did fail to load with error: %@",error);
+}
+
 - (void)webView:(WebView *)sender resource:(id)identifier didFailLoadingWithError:(NSError *)error fromDataSource:(WebDataSource *)dataSource {
-    NSLog(@"fail to load %@",error);
-}
-
-- (void)webView:(WebView *)sender resource:(id)identifier didFinishLoadingFromDataSource:(WebDataSource *)dataSource {
-    //NSLog(@"didFinishLoadingFromDataSource %@",identifier);
-}
-
-- (void)webView:(WebView *)sender resource:(id)identifier didReceiveContentLength:(NSUInteger)length fromDataSource:(WebDataSource *)dataSource {
-    //NSLog(@"didReceiveContentLength %lu",length);
+    NSLog(@"did fail to load with error: %@",error);
 }
 
 

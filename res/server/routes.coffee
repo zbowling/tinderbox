@@ -14,4 +14,4 @@ exports.routes = (app, instance) ->
   
   app.get '/rooms', (res,req) -> room.room_list(res,req)
   app.get '/room/:id', (res,req) -> room.room(res,req)
-  
+

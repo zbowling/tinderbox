@@ -2,6 +2,6 @@
     Error loading room list: <%= JSON.stringify(@error) %>
 <% else: %>
     <% for room in @rooms: %>
-        <p><%= room.name %></p>
+        <p><a href="javascript:window.tinderbox.showRoomWindow(<%= room.id %>);"><%= room.name %></a></p>
     <% end %>
 <% end %>
