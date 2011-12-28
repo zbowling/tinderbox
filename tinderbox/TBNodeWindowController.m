@@ -65,11 +65,11 @@
 }
 
 - (void)webView:(WebView *)sender resource:(id)identifier didFinishLoadingFromDataSource:(WebDataSource *)dataSource {
-    NSLog(@"didFinishLoadingFromDataSource %@",identifier);
+    //NSLog(@"didFinishLoadingFromDataSource %@",identifier);
 }
 
 - (void)webView:(WebView *)sender resource:(id)identifier didReceiveContentLength:(NSUInteger)length fromDataSource:(WebDataSource *)dataSource {
-    NSLog(@"didReceiveContentLength %lu",length);
+    //NSLog(@"didReceiveContentLength %lu",length);
 }
 
 

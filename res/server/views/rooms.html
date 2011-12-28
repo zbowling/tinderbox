@@ -1,0 +1,7 @@
+<% if not @rooms: %>
+    Error loading room list: <%= JSON.stringify(@error) %>
+<% else: %>
+    <% for room in @rooms: %>
+        <p><%= room.name %></p>
+    <% end %>
+<% end %>

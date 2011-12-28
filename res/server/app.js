@@ -1,4 +1,5 @@
 require("coffee-script");
+eco = require("eco");
 
 //we listen on this socket
 var socketPath = process.argv[2];
@@ -23,21 +24,26 @@ io.sockets.on('connection', function (socket) {
 });
 
 
-app.use(app.router);
+
 app.use(express.logger());
 app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({ secret: "$ecret" }));
 app.use(express.static(__dirname + '/static',{ maxAge: 0 }));
 app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-app.register('.html', require('ejs'));
+app.use(app.router);
+app.register('.html', eco);
 app.set('view engine','html');
-app.set('view options', {
-    open: '{{',
-    close: '}}'
-});
+app.set('basepath',"http://tinderbox.local/")
 
-require('./routes').routes(app);
+//Todo, move to utils
+String.prototype.trim = function () {
+    return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+instance = {}
+
+require('./routes').routes(app,instance);
 
 function startServer() {
     app.listen(socketPath,function () {
@@ -46,7 +52,6 @@ function startServer() {
 }
 
 fs.unlink(socketPath, function (err) {
-  //if (err) throw err; don't care
   startServer();
 });
 

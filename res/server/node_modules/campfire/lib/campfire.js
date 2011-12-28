@@ -11,7 +11,10 @@ var Campfire = function(options) {
   this.http          = ssl ? require("https") : require("http");
   this.port          = ssl ? 443 : 80;
   this.domain        = options.account + ".campfirenow.com";
-  this.authorization = "Basic " + new Buffer(options.token + ":x").toString("base64");
+  if (options.oauth)
+    this.authorization = "Token token=\"" + options.token + "\"";
+  else
+    this.authorization = "Basic " + new Buffer(options.token + ":x").toString("base64");
 };
 
 Campfire.prototype.join = function(id, callback) {

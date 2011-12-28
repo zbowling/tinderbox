@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
 <head>
-    <title>{{=page.title}}</title>
+    <title><%= @page_title ? "" %></title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 </head>
 <body>
-    {{-body}}
+    <%- @body %>
 </body>
 </html>

@@ -22,7 +22,7 @@
     [TBNodeServer sharedServer];
     [NSURLProtocol registerClass:[TBNodeURLProtocol class]];
     [[NSNotificationCenter defaultCenter] addObserverForName:TBNodeServerDidStartNotification object:[TBNodeServer sharedServer] queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification *note) {
-        _first = [[TBNodeWindowController alloc] initWithWindowNibName:nil defaultURL:[NSURL URLWithString:@"tinderbox:/main"]];
+        _first = [[TBNodeWindowController alloc] initWithWindowNibName:nil defaultURL:[NSURL URLWithString:@"http://tinderbox.local/main"]];
         [_first showWindow:self];
     }];
     

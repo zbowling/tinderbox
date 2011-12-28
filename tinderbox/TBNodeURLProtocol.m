@@ -122,11 +122,23 @@ static NSThread *listenerThread;
 
 
 - (void)startLoading {
-    _responseMessage = CFHTTPMessageCreateEmpty(kCFAllocatorDefault, TRUE);
+    _responseMessage = CFHTTPMessageCreateEmpty(kCFAllocatorDefault, FALSE);
     NSURLRequest *request = [self request];
     id<NSURLProtocolClient> client = [self client];
+    if ([request.URL host]) {
+        _rewritenURL = [NSURL URLWithString:[NSString stringWithFormat:@"http:%@",[request.URL resourceSpecifier]]];
+    }
+    else {
+        NSString *resource = [request.URL resourceSpecifier];
+        
+        if ([resource hasPrefix:@"//"])
+        {
+            resource = [resource substringFromIndex:2];
+        }
+        
+        _rewritenURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://tinderbox.local%@",resource]];
+    }
     
-    _rewritenURL = [NSURL URLWithString:[NSString stringWithFormat:@"http:%@",[request.URL resourceSpecifier]]];
     
     CFHTTPMessageRef httpRequest = CFHTTPMessageCreateRequest(kCFAllocatorDefault, (__bridge CFStringRef )request.HTTPMethod, (__bridge CFURLRef)_rewritenURL,
                                                               kCFHTTPVersion1_0); //CHANGE TO kCFHTTPVersion1_1 later
@@ -143,7 +155,7 @@ static NSThread *listenerThread;
     
     _requestData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(httpRequest);    
     
-    NSLog(@"request: %@",[[NSString alloc] initWithData:_requestData encoding:NSUTF8StringEncoding]);
+    //NSLog(@"request: %@",[[NSString alloc] initWithData:_requestData encoding:NSUTF8StringEncoding]);
     
     
     if (![self connect]){
@@ -154,25 +166,27 @@ static NSThread *listenerThread;
 
 - (void) parseReadBuffer {
     
-    if (_transferEncoding && [_transferEncoding caseInsensitiveCompare:@"chunked"] == NSOrderedSame) {
+    [[self client] URLProtocol:self didLoadData:[_readBuffer copy]];
+    _readLength += [_readBuffer length];
+    
+    _readBuffer = [NSMutableData data]; //reset read buffer in this mode
+    
+    if (_readLength >= _expectedLength) {
+        [[self client] URLProtocolDidFinishLoading:self];
+        [self close];
+    }
+    
+    /*if (_transferEncoding && [_transferEncoding caseInsensitiveCompare:@"chunked"] == NSOrderedSame) {
         //SUPPORT HTTP 1.1
         
-        /*if ([[[NSString alloc] initWithData:currentBody encoding:NSASCIIStringEncoding] hasSuffix:@"0\r\n\r\n"]){
+        if ([[[NSString alloc] initWithData:currentBody encoding:NSASCIIStringEncoding] hasSuffix:@"0\r\n\r\n"]){
             [[proto client] URLProtocolDidFinishLoading:proto];
             [proto close];
-        }*/
-    }
-    else {
-        [[self client] URLProtocol:self didLoadData:[_readBuffer copy]];
-        _readLength += [_readBuffer length];
-        
-        _readBuffer = [NSMutableData data]; //reset read buffer in this mode
-
-        if (_readLength >= _expectedLength) {
-            [[self client] URLProtocolDidFinishLoading:self];
-            [self close];
         }
     }
+    else {
+
+    }*/
 
 }
 
@@ -180,10 +194,10 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
 {
     TBNodeURLProtocol *proto = (__bridge TBNodeURLProtocol *)CFRetain(pInfo);
     if (type == kCFStreamEventOpenCompleted) {
-        NSLog(@"read: kCFStreamEventOpenCompleted");
+        //NSLog(@"read: kCFStreamEventOpenCompleted");
     }
     else if (type == kCFStreamEventHasBytesAvailable) {
-        NSLog(@"read: kCFStreamEventHasBytesAvailable");
+        //NSLog(@"read: kCFStreamEventHasBytesAvailable");
         uint8_t buf[1024];
         bzero(buf, 1024);
         NSUInteger len = 0;
@@ -196,15 +210,16 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                     if (CFHTTPMessageIsHeaderComplete(proto->_responseMessage)) {
                         proto->_hasHeader = YES;
                         
-                        NSData *responseData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(proto->_responseMessage);    
-                        
-                        NSLog(@"response: %@",[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-                        
-                        
+
                         NSInteger statusCode = CFHTTPMessageGetResponseStatusCode(proto->_responseMessage);
                         NSDictionary *headerFields = (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(proto->_responseMessage);
                         NSHTTPURLResponse *urlResponse = 
                             [[NSHTTPURLResponse alloc] initWithURL:[[proto request] URL] statusCode:statusCode HTTPVersion:@"HTTP/1.0" headerFields:headerFields];
+                        
+                        NSData *responseData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(proto->_responseMessage);    
+                        
+                        NSLog(@"response: %@",[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
+                        
                         
                         NSString *location = [headerFields objectForKey:@"Location"];
                         if (((statusCode >= 301 && statusCode <= 303) || statusCode == 307) && location) {
@@ -213,7 +228,7 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                             url = [NSURL URLWithString:location];
                             if (!url){
                                 //assume relative path
-                                url = [NSURL URLWithString:location relativeToURL:[NSURL URLWithString:@"tinderbox:/"]];
+                                url = [NSURL URLWithString:location relativeToURL:[NSURL URLWithString:@"http://tinderbox.local/"]];
                             }
                             
                             NSMutableURLRequest *request;
@@ -227,12 +242,11 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                             }
                             
                             [[proto client] URLProtocol:proto wasRedirectedToRequest:request redirectResponse:urlResponse];
-                            [[proto client] URLProtocolDidFinishLoading:proto];
                             [proto close];
                         }
                         else {
                             [[proto client] URLProtocol:proto didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowed];
-                            NSLog(@"didReceiveResponse %@",urlResponse);
+                            //NSLog(@"didReceiveResponse %@",urlResponse);
                             
                             proto->_transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
                             proto->_expectedLength = [urlResponse expectedContentLength];
@@ -245,7 +259,7 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                                 [proto parseReadBuffer];
                             }
                             
-                            NSLog(@"body: %@",[[NSString alloc] initWithData:currentBody encoding:NSUTF8StringEncoding]);
+                            //NSLog(@"body: %@",[[NSString alloc] initWithData:currentBody encoding:NSUTF8StringEncoding]);
                         }
 
                         
@@ -263,7 +277,7 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
     }
     else if (type == kCFStreamEventErrorOccurred)
     {
-        NSLog(@"read: kCFStreamEventErrorOccurred");
+        //NSLog(@"read: kCFStreamEventErrorOccurred");
         NSError *error = (__bridge_transfer NSError *)CFReadStreamCopyError(stream);
         [[proto client] URLProtocol:proto didFailWithError:error];
         NSLog(@"error %@",error);
@@ -271,8 +285,14 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
     }
     else if (type == kCFStreamEventEndEncountered)
     {
-        NSLog(@"read: kCFStreamEventEndEncountered");
-        [[proto client] URLProtocolDidFinishLoading:proto];
+        if (!proto->_hasHeader) {
+            NSError *error = [NSError errorWithDomain:@"com.zbowling.tinderbox" code:0 userInfo:nil];
+            [[proto client] URLProtocol:proto didFailWithError:error];
+        }
+        else {
+            //NSLog(@"read: kCFStreamEventEndEncountered");
+            [[proto client] URLProtocolDidFinishLoading:proto];
+        }
         [proto close];
     }
     CFRelease(pInfo);
@@ -282,10 +302,10 @@ static void CFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType ty
 {
     TBNodeURLProtocol *proto = (__bridge TBNodeURLProtocol *)CFRetain(pInfo);
     if (type == kCFStreamEventOpenCompleted) {
-        NSLog(@"write: kCFStreamEventOpenCompleted");
+        //NSLog(@"write: kCFStreamEventOpenCompleted");
     }
     else if (type == kCFStreamEventCanAcceptBytes) {
-        NSLog(@"write: kCFStreamEventCanAcceptBytes");
+        //NSLog(@"write: kCFStreamEventCanAcceptBytes");
         uint8_t *readBytes = (uint8_t *)[proto->_requestData bytes];
         readBytes += proto->_byteIndex; // instance variable to move pointer
         NSUInteger data_len = [proto->_requestData length];
@@ -297,14 +317,14 @@ static void CFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType ty
     }
     else if (type == kCFStreamEventErrorOccurred)
     {
-        NSLog(@"write: kCFStreamEventErrorOccurred");
+        //NSLog(@"write: kCFStreamEventErrorOccurred");
         NSError *error = (__bridge_transfer NSError *)CFWriteStreamCopyError(stream);
         [[proto client] URLProtocol:proto didFailWithError:error];
         [proto close];
     }
     else if (type == kCFStreamEventEndEncountered)
     {
-        NSLog(@"write: kCFStreamEventEndEncountered");
+        //NSLog(@"write: kCFStreamEventEndEncountered");
         [[proto client] URLProtocolDidFinishLoading:proto];
         [proto close];
     }
