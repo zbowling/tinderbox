@@ -1,0 +1,21 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect("http://tinderbox.local/roomsocket");
+  socket.on('connect', function (){
+      socket.emit('init',{ room: window.location.pathname.match( /[^\/]+\/?$/ )});
+  });
+  socket.on('ready', function (data){
+      console.log(data);
+  });
+  socket.on('message', function (message) {
+      console.log(message);
+  });
+</script>
+<div class="container-fluid">
+   <div class="sidebar">
+     <div id="users"></div>
+   </div>
+   <div class="content">
+     <div id="messages"></div>
+   </div>
+</div>
