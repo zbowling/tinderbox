@@ -141,7 +141,7 @@ static NSThread *listenerThread;
     
     
     CFHTTPMessageRef httpRequest = CFHTTPMessageCreateRequest(kCFAllocatorDefault, (__bridge CFStringRef )request.HTTPMethod, (__bridge CFURLRef)_rewritenURL,
-                                                              kCFHTTPVersion1_0); //CHANGE TO kCFHTTPVersion1_1 later
+                                                              kCFHTTPVersion1_1); //CHANGE TO kCFHTTPVersion1_1 later
     
     CFHTTPMessageSetBody(httpRequest, (__bridge CFDataRef )request.HTTPBody);
     
@@ -166,27 +166,56 @@ static NSThread *listenerThread;
 
 - (void) parseReadBuffer {
     
-    [[self client] URLProtocol:self didLoadData:[_readBuffer copy]];
-    _readLength += [_readBuffer length];
-    
-    _readBuffer = [NSMutableData data]; //reset read buffer in this mode
-    
-    if (_readLength >= _expectedLength) {
-        [[self client] URLProtocolDidFinishLoading:self];
-        [self close];
-    }
-    
-    /*if (_transferEncoding && [_transferEncoding caseInsensitiveCompare:@"chunked"] == NSOrderedSame) {
+    if (_transferEncoding && [_transferEncoding caseInsensitiveCompare:@"chunked"] == NSOrderedSame) {
         //SUPPORT HTTP 1.1
-        
-        if ([[[NSString alloc] initWithData:currentBody encoding:NSASCIIStringEncoding] hasSuffix:@"0\r\n\r\n"]){
-            [[proto client] URLProtocolDidFinishLoading:proto];
-            [proto close];
+        while (true) {
+            if (_expectedLength == 0) {
+                char *buf = (char *)[_readBuffer bytes];
+                char *newline = strstr(buf, "\r\n");
+                if (newline) {
+                    int d;
+                    if (sscanf(buf, "%d", &d) != 1) {
+                        break;
+                    }
+                    if (d == 0){
+                        [[self client] URLProtocolDidFinishLoading:self];
+                        [self close];
+                        return;
+                    }
+                    [_readBuffer replaceBytesInRange:NSMakeRange(0, newline-buf) withBytes:NULL length:0]; 
+                    _expectedLength = d;
+                }
+                else {
+                    break;
+                }
+
+            }
+            else {
+                if ([_readBuffer length] > _expectedLength) {
+                    [[self client] URLProtocol:self didLoadData:[NSData dataWithBytes:[_readBuffer bytes] length:_expectedLength]];
+                    [_readBuffer replaceBytesInRange:NSMakeRange(0, _expectedLength) withBytes:NULL length:0]; 
+                    _expectedLength = 0;
+                }
+                else {
+                    break;
+                }
+            }
         }
+        
+        
     }
     else {
-
-    }*/
+        [[self client] URLProtocol:self didLoadData:[_readBuffer copy]];
+        _readLength += [_readBuffer length];
+        
+        [_readBuffer replaceBytesInRange:NSMakeRange(0, [_readBuffer length]) withBytes:NULL length:0]; //reset read buffer in this mode
+        
+        if (_readLength >= _expectedLength) {
+            [[self client] URLProtocolDidFinishLoading:self];
+            [self close];
+        }
+        
+    }
 
 }
 
@@ -214,7 +243,7 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                         NSInteger statusCode = CFHTTPMessageGetResponseStatusCode(proto->_responseMessage);
                         NSDictionary *headerFields = (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(proto->_responseMessage);
                         NSHTTPURLResponse *urlResponse = 
-                            [[NSHTTPURLResponse alloc] initWithURL:[[proto request] URL] statusCode:statusCode HTTPVersion:@"HTTP/1.0" headerFields:headerFields];
+                            [[NSHTTPURLResponse alloc] initWithURL:[[proto request] URL] statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:headerFields];
                         
                         NSData *responseData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(proto->_responseMessage);    
                         
