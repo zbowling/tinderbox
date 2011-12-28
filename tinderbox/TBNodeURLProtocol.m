@@ -241,14 +241,14 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                         
 
                         NSInteger statusCode = CFHTTPMessageGetResponseStatusCode(proto->_responseMessage);
-                        NSDictionary *headerFields = (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(proto->_responseMessage);
+                        NSMutableDictionary *headerFields = [(__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(proto->_responseMessage) mutableCopy];
+                        NSString *transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
+                        [headerFields removeObjectForKey:@"Transfer-Encoding"];
+                        
                         NSHTTPURLResponse *urlResponse = 
                             [[NSHTTPURLResponse alloc] initWithURL:[[proto request] URL] statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:headerFields];
                         
-                        NSData *responseData = (__bridge_transfer NSData *)CFHTTPMessageCopySerializedMessage(proto->_responseMessage);    
-                        
-                        NSLog(@"response: %@",[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding]);
-                        
+
                         
                         NSString *location = [headerFields objectForKey:@"Location"];
                         if (((statusCode >= 301 && statusCode <= 303) || statusCode == 307) && location) {
@@ -277,7 +277,7 @@ static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type
                             [[proto client] URLProtocol:proto didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowed];
                             //NSLog(@"didReceiveResponse %@",urlResponse);
                             
-                            proto->_transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
+                            proto->_transferEncoding = transferEncoding;
                             proto->_expectedLength = [urlResponse expectedContentLength];
                             proto->_readLength = 0;
                             
