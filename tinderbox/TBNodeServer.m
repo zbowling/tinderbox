@@ -8,6 +8,9 @@
 
 #import "TBNodeServer.h"
 #import "NSFileManager+TB.h"
+#include <sys/types.h>
+#include <sys/un.h>
+#include <sys/socket.h>
 
 
 NSString * const TBNodeServerDidStartNotification = @"TBNodeServerDidStartNotification";
@@ -191,6 +194,33 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     {
         kill([self readProcessIdentiferFromDisk], SIGKILL);
     }
+}
+
+-(BOOL)createStreamPairToServerWithInputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream {
+    struct sockaddr_un *sockaddr = malloc(sizeof(struct sockaddr_un));
+    bzero(sockaddr, sizeof(struct sockaddr_un));
+    sockaddr->sun_family = AF_UNIX;
+    strncpy(sockaddr->sun_path, [[[TBNodeServer sharedServer] serverSocketPath] cStringUsingEncoding:NSUTF8StringEncoding],104);
+    CFDataRef address = CFDataCreateWithBytesNoCopy(NULL, (const UInt8 *)sockaddr, sizeof(struct sockaddr_un), NULL);
+    CFSocketSignature signature = { AF_UNIX, SOCK_STREAM, 0, address };
+    
+    CFReadStreamRef cfReadStream;
+    CFWriteStreamRef cfWriteStream;
+    
+    CFStreamCreatePairWithPeerSocketSignature(NULL, &signature, &cfReadStream, &cfWriteStream);
+    
+    CFRelease(address);
+    if (cfReadStream != NULL && cfWriteStream != NULL) {
+        
+        CFReadStreamSetProperty(cfReadStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+        CFWriteStreamSetProperty(cfWriteStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+        
+        //convert over to foundation now.
+        *inputStream = (__bridge_transfer NSInputStream *)cfReadStream;
+        *outputStream = (__bridge_transfer NSOutputStream *)cfWriteStream;
+        return YES;
+    }
+    return NO;
 }
 
 -(void)dealloc

@@ -16,6 +16,7 @@
     self = [super initWithFrame:frame frameName:frameName groupName:groupName];
     if (self)
     {   
+        
     }
     return self;
 }

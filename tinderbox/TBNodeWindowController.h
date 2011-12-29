@@ -16,7 +16,6 @@
 
 @property (weak) IBOutlet TBWebView *webView;
 
-- (IBAction)showConsole:(id)sender;
-- (IBAction)hideConsole:(id)sender;
+- (void)setupWebScriptableObjects;
 
 @end

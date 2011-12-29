@@ -7,14 +7,12 @@
 //
 
 #import "TBNodeWindowController.h"
-#import "WebInspector.h"
 #import "TBWebView.h"
 #import "TBWebViewPreferencesScriptableObject.h"
 #import "TBWebViewAppScriptableObject.h"
 
 
 @implementation TBNodeWindowController {
-    WebInspector *_webInspector;
     NSURL *_defaultURL;
 }
 @synthesize webView=_webView;
@@ -30,25 +28,6 @@
     }
     
     return self;
-}
-
-- (IBAction)showConsole:(id)sender {
-    if(!_webInspector) {
-        _webInspector = [[WebInspector alloc] initWithWebView:self.webView];
-        [_webInspector detach:self.webView];
-    }
-    
-    [_webInspector showConsole:self.webView];
-}
-
-
-- (IBAction)hideConsole:(id)sender {
-    if(!_webInspector) {
-        _webInspector = [[WebInspector alloc] initWithWebView:self.webView];
-        [_webInspector detach:self.webView];
-    }
-    
-    [_webInspector show:self.webView];
 }
 
 

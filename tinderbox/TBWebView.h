@@ -10,6 +10,4 @@
 
 @interface TBWebView : WebView
 
-- (void)setupWebScriptableObjects;
-
 @end

@@ -25,32 +25,19 @@
 
 @end
 
-static NSThread *listenerThread;
-
 @implementation TBNodeURLProtocol {
-    CFReadStreamRef _readStream;
-    CFWriteStreamRef _writeStream;
-    
+    NSInputStream *_readStream;
+    NSOutputStream *_writeStream;
     NSData *_requestData;
-    
     NSUInteger _byteIndex;
-    
     CFHTTPMessageRef _responseMessage;
-    
     BOOL _hasHeader;
-    
     NSURL *_rewritenURL;
-    
     CFStreamClientContext _streamContext;
-    
     long long _expectedLength;
-    
     long long _readLength;
-    
     NSString *_transferEncoding;
-    
     NSMutableData *_readBuffer;
-    
 }
 
 + (NSString *)protocolScheme {
@@ -75,33 +62,31 @@ static NSThread *listenerThread;
 }
 
 
-+ (void)startListenerThreadIfNeeded
++ (NSThread *)networkThread
 {
+    static NSThread *networkThread;
 	static dispatch_once_t predicate;
 	dispatch_once(&predicate, ^{
-        
-		listenerThread = [[NSThread alloc] initWithTarget:self
-		                                         selector:@selector(listenerThread)
+		networkThread = [[NSThread alloc] initWithTarget:self
+		                                         selector:@selector(networkRequestThreadEntryPoint)
 		                                           object:nil];
-		[listenerThread start];
+		[networkThread start];
 	});
+    return networkThread;
 }
 
-- (void)ignore:(id)noop {}
-
-+ (void)listenerThread
++ (void)networkRequestThreadEntryPoint
 {
- 
     @autoreleasepool {
-        // We can't run the run loop unless it has an associated input source or a timer.
-        // So we'll just create a timer that will never fire - unless the server runs for a decades.
-        [NSTimer scheduledTimerWithTimeInterval:[[NSDate distantFuture] timeIntervalSinceNow]
-                                         target:self
-                                       selector:@selector(ignore:)
-                                       userInfo:nil
-                                        repeats:YES];
-        
-        [[NSRunLoop currentRunLoop] run];
+        @try {
+            [[NSRunLoop currentRunLoop] run];
+        }
+        @catch  (NSException * exception){
+            NSLog(@"exception %@", exception);
+        }
+        @finally {
+            
+        }
     }
 
 }
@@ -139,9 +124,8 @@ static NSThread *listenerThread;
         _rewritenURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://tinderbox.local%@",resource]];
     }
     
-    
     CFHTTPMessageRef httpRequest = CFHTTPMessageCreateRequest(kCFAllocatorDefault, (__bridge CFStringRef )request.HTTPMethod, (__bridge CFURLRef)_rewritenURL,
-                                                              kCFHTTPVersion1_0); //CHANGE TO kCFHTTPVersion1_1 later
+                                                            kCFHTTPVersion1_0); //CHANGE TO kCFHTTPVersion1_1 later
     
     CFHTTPMessageSetBody(httpRequest, (__bridge CFDataRef )request.HTTPBody);
     
@@ -159,6 +143,7 @@ static NSThread *listenerThread;
     
     
     if (![self connect]){
+        //TODO need a better error
         [client URLProtocol:self didFailWithError:[NSError errorWithDomain:@"com.zbowling.tinderbox" code:0 userInfo:nil]];
     }
     
@@ -219,204 +204,180 @@ static NSThread *listenerThread;
 
 }
 
-static void CFReadStreamCallback (CFReadStreamRef stream, CFStreamEventType type, void *pInfo)
-{
-    TBNodeURLProtocol *proto = (__bridge TBNodeURLProtocol *)CFRetain(pInfo);
-    if (type == kCFStreamEventOpenCompleted) {
-        NSLog(@"read: kCFStreamEventOpenCompleted");
-    }
-    else if (type == kCFStreamEventHasBytesAvailable) {
-        NSLog(@"read: kCFStreamEventHasBytesAvailable");
-        uint8_t buf[1024];
-        bzero(buf, 1024);
-        NSUInteger len = 0;
-        len = CFReadStreamRead(stream,buf,1024);
-        if (len) {
-            if (!proto->_hasHeader)
-            {
-                if (proto->_responseMessage != NULL){
-                    CFHTTPMessageAppendBytes(proto->_responseMessage, buf, len);
-                    if (CFHTTPMessageIsHeaderComplete(proto->_responseMessage)) {
-                        proto->_hasHeader = YES;
+- (void)handleReadStreamHasBytesAvailable {
+    NSLog(@"read: bytes");
+    uint8_t buf[1024];
+    bzero(buf, 1024);
+    NSUInteger len = 0;
+    len = [_readStream read:buf maxLength:1024];
+    if (len) {
+        if (!_hasHeader)
+        {
+            if (_responseMessage != NULL){
+                CFHTTPMessageAppendBytes(_responseMessage, buf, len);
+                if (CFHTTPMessageIsHeaderComplete(_responseMessage)) {
+                    _hasHeader = YES;
+                    
+                    NSInteger statusCode = CFHTTPMessageGetResponseStatusCode(_responseMessage);
+                    NSMutableDictionary *headerFields = [(__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(_responseMessage) mutableCopy];
+                    NSString *transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
+                    [headerFields removeObjectForKey:@"Transfer-Encoding"];
+                    
+                    NSHTTPURLResponse *urlResponse = 
+                    [[NSHTTPURLResponse alloc] initWithURL:[[self request] URL] statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:headerFields];
+                    
+                    
+                    
+                    NSString *location = [headerFields objectForKey:@"Location"];
+                    if (((statusCode >= 301 && statusCode <= 303) || statusCode == 307) && location) {
                         
-
-                        NSInteger statusCode = CFHTTPMessageGetResponseStatusCode(proto->_responseMessage);
-                        NSMutableDictionary *headerFields = [(__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(proto->_responseMessage) mutableCopy];
-                        NSString *transferEncoding = [headerFields objectForKey:@"Transfer-Encoding"];
-                        [headerFields removeObjectForKey:@"Transfer-Encoding"];
-                        
-                        NSHTTPURLResponse *urlResponse = 
-                            [[NSHTTPURLResponse alloc] initWithURL:[[proto request] URL] statusCode:statusCode HTTPVersion:@"HTTP/1.1" headerFields:headerFields];
-                        
-
-                        
-                        NSString *location = [headerFields objectForKey:@"Location"];
-                        if (((statusCode >= 301 && statusCode <= 303) || statusCode == 307) && location) {
-                            
-                            NSURL *url;
-                            url = [NSURL URLWithString:location];
-                            if (!url){
-                                //assume relative path
-                                url = [NSURL URLWithString:location relativeToURL:[NSURL URLWithString:@"http://tinderbox.local/"]];
-                            }
-                            
-                            NSMutableURLRequest *request;
-                            
-                            if (statusCode == 301){
-                                //301s should reuse the same request.
-                                request = [[proto request] mutableCopy];
-                                [request setURL:url];
-                            } else {
-                                request = [[NSMutableURLRequest alloc] initWithURL:url];
-                            }
-                            
-                            [[proto client] URLProtocol:proto wasRedirectedToRequest:request redirectResponse:urlResponse];
-                            [proto close];
+                        NSURL *url;
+                        url = [NSURL URLWithString:location];
+                        if (!url){
+                            //assume relative path
+                            url = [NSURL URLWithString:location relativeToURL:[NSURL URLWithString:@"http://tinderbox.local/"]];
                         }
-                        else {
-                            [[proto client] URLProtocol:proto didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowed];
-                            //NSLog(@"didReceiveResponse %@",urlResponse);
-                            
-                            proto->_transferEncoding = transferEncoding;
-                            proto->_expectedLength = [urlResponse expectedContentLength];
-                            proto->_readLength = 0;
-                            
-                            NSData *currentBody = (__bridge_transfer NSData *)CFHTTPMessageCopyBody(proto->_responseMessage);
-                            
-                            if (currentBody || [currentBody length] > 0) {
-                                [proto->_readBuffer appendData:currentBody];
-                                [proto parseReadBuffer];
-                            }
-                            
-                            //NSLog(@"body: %@",[[NSString alloc] initWithData:currentBody encoding:NSUTF8StringEncoding]);
-                        }
-
                         
-                        if (proto->_responseMessage)
-                            CFRelease(proto->_responseMessage), proto->_responseMessage = NULL;
+                        NSMutableURLRequest *request;
+                        
+                        if (statusCode == 301){
+                            //301s should reuse the same request.
+                            request = [[self request] mutableCopy];
+                            [request setURL:url];
+                        } else {
+                            request = [[NSMutableURLRequest alloc] initWithURL:url];
+                        }
+                        
+                        [[self client] URLProtocol:self wasRedirectedToRequest:request redirectResponse:urlResponse];
+                        [self close];
                     }
+                    else {
+                        [[self client] URLProtocol:self didReceiveResponse:urlResponse cacheStoragePolicy:NSURLCacheStorageAllowed];
+                        //NSLog(@"didReceiveResponse %@",urlResponse);
+                        
+                        _transferEncoding = transferEncoding;
+                        _expectedLength = [urlResponse expectedContentLength];
+                        _readLength = 0;
+                        
+                        NSData *currentBody = (__bridge_transfer NSData *)CFHTTPMessageCopyBody(_responseMessage);
+                        
+                        if (currentBody || [currentBody length] > 0) {
+                            [_readBuffer appendData:currentBody];
+                            [self parseReadBuffer];
+                        }
+                        
+                        //NSLog(@"body: %@",[[NSString alloc] initWithData:currentBody encoding:NSUTF8StringEncoding]);
+                    }
+                    
+                    
+                    if (_responseMessage)
+                        CFRelease(_responseMessage), _responseMessage = NULL;
                 }
             }
-            else {
-                NSData *data = [NSData dataWithBytes:buf length:len];
-                [proto->_readBuffer appendData:data];
-                [proto parseReadBuffer];
-            }
-        }
-    }
-    else if (type == kCFStreamEventErrorOccurred)
-    {
-        //NSLog(@"read: kCFStreamEventErrorOccurred");
-        NSError *error = (__bridge_transfer NSError *)CFReadStreamCopyError(stream);
-        [[proto client] URLProtocol:proto didFailWithError:error];
-        NSLog(@"error %@",error);
-        [proto close];
-    }
-    else if (type == kCFStreamEventEndEncountered)
-    {
-        if (!proto->_hasHeader) {
-            NSError *error = [NSError errorWithDomain:@"com.zbowling.tinderbox" code:0 userInfo:nil];
-            [[proto client] URLProtocol:proto didFailWithError:error];
         }
         else {
-            //NSLog(@"read: kCFStreamEventEndEncountered");
-            [[proto client] URLProtocolDidFinishLoading:proto];
-        }
-        [proto close];
-    }
-    CFRelease(pInfo);
-}
-
-static void CFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType type, void *pInfo)
-{
-    TBNodeURLProtocol *proto = (__bridge TBNodeURLProtocol *)CFRetain(pInfo);
-    if (type == kCFStreamEventOpenCompleted) {
-        //NSLog(@"write: kCFStreamEventOpenCompleted");
-    }
-    else if (type == kCFStreamEventCanAcceptBytes) {
-        //NSLog(@"write: kCFStreamEventCanAcceptBytes");
-        uint8_t *readBytes = (uint8_t *)[proto->_requestData bytes];
-        readBytes += proto->_byteIndex; // instance variable to move pointer
-        NSUInteger data_len = [proto->_requestData length];
-        NSUInteger len = ((data_len - proto->_byteIndex >= 1024) ? 1024 : (data_len-proto->_byteIndex));
-        if (len > 0) {
-            len = CFWriteStreamWrite(stream, readBytes, len);
-            proto->_byteIndex += len;
+            NSData *data = [NSData dataWithBytes:buf length:len];
+            [_readBuffer appendData:data];
+            [self parseReadBuffer];
         }
     }
-    else if (type == kCFStreamEventErrorOccurred)
-    {
-        //NSLog(@"write: kCFStreamEventErrorOccurred");
-        NSError *error = (__bridge_transfer NSError *)CFWriteStreamCopyError(stream);
-        [[proto client] URLProtocol:proto didFailWithError:error];
-        [proto close];
+}
+
+- (void)handleWriteStreamCanAcceptBytes {
+    uint8_t *readBytes = (uint8_t *)[_requestData bytes];
+    readBytes += _byteIndex; // instance variable to move pointer
+    NSUInteger data_len = [_requestData length];
+    NSUInteger len = ((data_len - _byteIndex >= 1024) ? 1024 : (data_len-_byteIndex));
+    if (len > 0) {
+        len = [_writeStream write:readBytes maxLength:len];
+        _byteIndex += len;
     }
-    else if (type == kCFStreamEventEndEncountered)
-    {
-        //NSLog(@"write: kCFStreamEventEndEncountered");
-        [[proto client] URLProtocolDidFinishLoading:proto];
-        [proto close];
+}
+
+- (void)handleStreamHasError:(NSStream *)stream {
+    NSError *error = [stream streamError];
+    [[self client] URLProtocol:self didFailWithError:error];
+    NSLog(@"error %@",error);
+    [self close];
+}
+
+- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)event {
+    switch (event) {
+        case NSStreamEventOpenCompleted:
+            /*if (stream == _readStream)
+                NSLog(@"read stream opened");
+            else
+                NSLog(@"write stream opened");*/
+            break;
+        case NSStreamEventHasBytesAvailable:
+            if (stream == _readStream)
+                [self handleReadStreamHasBytesAvailable];
+            break;
+        case NSStreamEventHasSpaceAvailable:
+            [self handleWriteStreamCanAcceptBytes];
+            break;
+        case NSStreamEventErrorOccurred:
+            [self handleStreamHasError:stream];
+            break;
+        case NSStreamEventEndEncountered:
+            if (stream == _readStream && !_hasHeader) {
+                //make this error give more info
+                NSError *error = [NSError errorWithDomain:@"com.zbowling.tinderbox" code:0 userInfo:nil];
+                [[self client] URLProtocol:self didFailWithError:error];
+            }
+            else {
+                [[self client] URLProtocolDidFinishLoading:self];
+            }
+            [self close];
+        default:
+            break;
     }
-    CFRelease(pInfo);
 }
 
 
+- (void)openOnNetworkThread {
+    [_readStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [_writeStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    
+    if ([_readStream streamStatus] == NSStreamStatusNotOpen)
+        [_readStream open];
+    
+    if ([_writeStream streamStatus] == NSStreamStatusNotOpen)
+        [_writeStream open];
+}
+
+- (void)closeOnNetworkThread {
+    [_readStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    [_writeStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+    
+    if ([_readStream streamStatus] != NSStreamStatusClosed || [_readStream streamStatus] != NSStreamStatusError) {
+        [_readStream close];
+        _readStream = nil;
+    }
+    
+    if ([_writeStream streamStatus] != NSStreamStatusClosed || [_writeStream streamStatus] != NSStreamStatusError) {
+        [_writeStream close];
+        _writeStream = nil;
+    }
+}
 
 - (BOOL)connect {
     
-    struct sockaddr_un *sockaddr = malloc(sizeof(struct sockaddr_un));
-    bzero(sockaddr, sizeof(struct sockaddr_un));
-    sockaddr->sun_family = AF_UNIX;
-    strncpy(sockaddr->sun_path, [[[TBNodeServer sharedServer] serverSocketPath] cStringUsingEncoding:NSUTF8StringEncoding],104);
-    CFDataRef address = CFDataCreateWithBytesNoCopy(NULL, (const UInt8 *)sockaddr, sizeof(struct sockaddr_un), NULL);
-    CFSocketSignature signature = { AF_UNIX, SOCK_STREAM, 0, address };
+    NSInputStream *inputStream;
+    NSOutputStream *outputStream;
+    if ([[TBNodeServer sharedServer] createStreamPairToServerWithInputStream:&inputStream outputStream:&outputStream]) {
     
-    CFStreamCreatePairWithPeerSocketSignature(NULL, &signature, &_readStream, &_writeStream);
-    CFRelease(address);
-    if (_readStream != NULL && _writeStream != NULL) {
+        _readStream = inputStream;
+        _writeStream = outputStream;
         
-        CFReadStreamSetProperty(_readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-        CFWriteStreamSetProperty(_writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-
-
-        _streamContext.version = 0;
-        _streamContext.info = (__bridge void *) self;
-        _streamContext.retain = nil;
-        _streamContext.release = nil;
-        _streamContext.copyDescription = nil;
-        
-        CFOptionFlags readStreamEvents = kCFStreamEventErrorOccurred | kCFStreamEventEndEncountered | kCFStreamEventHasBytesAvailable  | kCFStreamEventOpenCompleted;
-        
-        if (!CFReadStreamSetClient(_readStream, readStreamEvents, &CFReadStreamCallback, &_streamContext))
-        {
-            return NO;
-        }
-        
-        CFOptionFlags writeStreamEvents = kCFStreamEventErrorOccurred | kCFStreamEventEndEncountered | kCFStreamEventCanAcceptBytes | kCFStreamEventOpenCompleted;
-        
-        if (!CFWriteStreamSetClient(_writeStream, writeStreamEvents, &CFWriteStreamCallback, &_streamContext))
-        {
-            return NO;
-        }
-        
-        CFReadStreamScheduleWithRunLoop(_readStream, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
-		CFWriteStreamScheduleWithRunLoop(_writeStream, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
-        
-        
-        CFStreamStatus readStatus = CFReadStreamGetStatus(_readStream);
-        CFStreamStatus writeStatus = CFWriteStreamGetStatus(_writeStream);
-        
-        if ((readStatus == kCFStreamStatusNotOpen) || (writeStatus == kCFStreamStatusNotOpen))
-        {
-            CFWriteStreamOpen(_writeStream);
-            CFReadStreamOpen(_readStream);
-        }
+        _readStream.delegate = self;
+        _writeStream.delegate = self;
+         
+        [self performSelector:@selector(openOnNetworkThread) onThread:[[self class] networkThread] withObject:nil waitUntilDone:YES];
+        return YES;
     }
-    else{
-        return NO;
-    }
-
-    return YES;
+    
+    return NO;
 }
 
 - (void)stopLoading {
@@ -432,17 +393,10 @@ static void CFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType ty
 
 
 - (void)close {
-    if (_readStream != NULL)
-    {
-        CFReadStreamUnscheduleFromRunLoop(_readStream, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
-        CFReadStreamClose(_readStream),_readStream = NULL;
-    }
-    
-    if (_writeStream != NULL)
-    {
-        CFWriteStreamUnscheduleFromRunLoop(_writeStream, CFRunLoopGetMain(), kCFRunLoopDefaultMode);
-        CFWriteStreamClose(_writeStream),_writeStream = NULL;
-    }
+    if ([NSThread currentThread] == [[self class] networkThread])
+        [self closeOnNetworkThread];
+    else 
+        [self performSelector:@selector(openOnNetworkThread) onThread:[[self class] networkThread] withObject:nil waitUntilDone:YES];
     
     if (_responseMessage != NULL)
     {

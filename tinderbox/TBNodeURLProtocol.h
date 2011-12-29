@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TBNodeURLProtocol : NSURLProtocol
+@interface TBNodeURLProtocol : NSURLProtocol<NSStreamDelegate>
 
 + (NSString *)protocolScheme;
 

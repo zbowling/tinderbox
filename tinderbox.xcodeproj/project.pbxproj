@@ -74,7 +74,6 @@
 		D91323D814A8137000EF9073 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D91323DB14A86FC700EF9073 /* server */ = {isa = PBXFileReference; lastKnownFileType = folder; name = server; path = ../res/server; sourceTree = "<group>"; };
 		D91323DD14A8700100EF9073 /* node */ = {isa = PBXFileReference; lastKnownFileType = folder; name = node; path = res/node; sourceTree = SOURCE_ROOT; };
-		D91323E014A883D600EF9073 /* WebInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebInspector.h; sourceTree = "<group>"; };
 		D91323E214A89CE700EF9073 /* TBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBWebView.h; sourceTree = "<group>"; };
 		D91323E314A89CE700EF9073 /* TBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebView.m; sourceTree = "<group>"; };
 		D91323E514A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBWebViewPreferencesScriptableObject.h; sourceTree = "<group>"; };
@@ -151,8 +150,8 @@
 		D9131A1C14A6A24600EF9073 /* tinderbox */ = {
 			isa = PBXGroup;
 			children = (
+				D91323F014AC094C00EF9073 /* Scriptable Objects */,
 				D91323E114A89CC000EF9073 /* Views */,
-				D91323DF14A883C500EF9073 /* External */,
 				D91323C914A7E08600EF9073 /* Categories */,
 				D91323C814A7E07500EF9073 /* Server */,
 				D9131A2814A6A24600EF9073 /* TBAppDelegate.h */,
@@ -231,25 +230,24 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		D91323DF14A883C500EF9073 /* External */ = {
-			isa = PBXGroup;
-			children = (
-				D91323E014A883D600EF9073 /* WebInspector.h */,
-			);
-			name = External;
-			sourceTree = "<group>";
-		};
 		D91323E114A89CC000EF9073 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				D91323E214A89CE700EF9073 /* TBWebView.h */,
 				D91323E314A89CE700EF9073 /* TBWebView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		D91323F014AC094C00EF9073 /* Scriptable Objects */ = {
+			isa = PBXGroup;
+			children = (
 				D91323E514A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.h */,
 				D91323E614A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m */,
 				D91323EA14AACCF500EF9073 /* TBWebViewAppScriptableObject.h */,
 				D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */,
 			);
-			name = Views;
+			name = "Scriptable Objects";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

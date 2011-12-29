@@ -23,8 +23,11 @@ extern NSString * const TBNodeServerLogNotification;
 
 - (NSString *)serverSocketPath;
 
+- (BOOL)createStreamPairToServerWithInputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
+
 - (BOOL)isServerRunning;
 
 - (void)stopServer;
+
 
 @end
