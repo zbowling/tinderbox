@@ -21,7 +21,10 @@ extern NSString * const TBNodeServerLogNotification;
 
 - (id)initWithScriptPath:(NSString *)scriptPath;
 
+- (NSString *)callbackSocketPath;
 - (NSString *)serverSocketPath;
+
++ (BOOL)createStreamPairToPath:(NSString *)path inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
 
 - (BOOL)createStreamPairToServerWithInputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
 

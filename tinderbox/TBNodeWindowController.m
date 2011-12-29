@@ -24,7 +24,7 @@
     
     self = [super initWithWindowNibName:windowNibNameOrNil];
     if (self) {
-        _defaultURL = defaultURL;
+        _defaultURL = defaultURL; 
     }
     
     return self;

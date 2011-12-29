@@ -30,6 +30,7 @@
 		D91323E914A91F4500EF9073 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D91323E814A91F4500EF9073 /* Preferences.xib */; };
 		D91323EC14AACCF500EF9073 /* TBWebViewAppScriptableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */; };
 		D91323EF14AACE3500EF9073 /* TBRoomWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */; };
+		D91323F314AC2D0300EF9073 /* TBNodeCallbackServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323F214AC2D0200EF9073 /* TBNodeCallbackServer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,8 @@
 		D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebViewAppScriptableObject.m; sourceTree = "<group>"; };
 		D91323ED14AACE3500EF9073 /* TBRoomWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBRoomWindowController.h; sourceTree = "<group>"; };
 		D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBRoomWindowController.m; sourceTree = "<group>"; };
+		D91323F114AC2D0200EF9073 /* TBNodeCallbackServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeCallbackServer.h; sourceTree = "<group>"; };
+		D91323F214AC2D0200EF9073 /* TBNodeCallbackServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeCallbackServer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +219,8 @@
 				D9131A5114A6AB0900EF9073 /* TBNodeServer.m */,
 				D91323CA14A7EFC400EF9073 /* TBNodeURLProtocol.h */,
 				D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */,
+				D91323F114AC2D0200EF9073 /* TBNodeCallbackServer.h */,
+				D91323F214AC2D0200EF9073 /* TBNodeCallbackServer.m */,
 			);
 			name = Server;
 			sourceTree = "<group>";
@@ -372,6 +377,7 @@
 				D91323E714A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m in Sources */,
 				D91323EC14AACCF500EF9073 /* TBWebViewAppScriptableObject.m in Sources */,
 				D91323EF14AACE3500EF9073 /* TBRoomWindowController.m in Sources */,
+				D91323F314AC2D0300EF9073 /* TBNodeCallbackServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

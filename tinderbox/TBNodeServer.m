@@ -64,9 +64,14 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     return [[[NSBundle mainBundle] bundleURL] URLByAppendingPathComponent:@"Contents/Resources/server" isDirectory:YES];
 }
 
+- (NSString *)callbackSocketPath {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"callback"]];
+}
+
 - (NSString *)serverSocketPath {
     NSFileManager *fm = [NSFileManager defaultManager];
-    return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"sock"]];
+    return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"server"]];
 }
 
 - (NSString *)serverPidFilePath {
@@ -196,11 +201,15 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     }
 }
 
--(BOOL)createStreamPairToServerWithInputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream {
+- (BOOL)createStreamPairToServerWithInputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream {
+    return [[self class] createStreamPairToPath:[self serverSocketPath] inputStream:inputStream outputStream:outputStream];
+}
+
++ (BOOL)createStreamPairToPath:(NSString *)path inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream {
     struct sockaddr_un *sockaddr = malloc(sizeof(struct sockaddr_un));
     bzero(sockaddr, sizeof(struct sockaddr_un));
     sockaddr->sun_family = AF_UNIX;
-    strncpy(sockaddr->sun_path, [[[TBNodeServer sharedServer] serverSocketPath] cStringUsingEncoding:NSUTF8StringEncoding],104);
+    strncpy(sockaddr->sun_path, [path cStringUsingEncoding:NSUTF8StringEncoding], 104);
     CFDataRef address = CFDataCreateWithBytesNoCopy(NULL, (const UInt8 *)sockaddr, sizeof(struct sockaddr_un), NULL);
     CFSocketSignature signature = { AF_UNIX, SOCK_STREAM, 0, address };
     
