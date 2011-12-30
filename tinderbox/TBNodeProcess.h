@@ -13,9 +13,9 @@ extern NSString * const TBNodeServerDidErrorNotification;
 extern NSString * const TBNodeServerLogNotification;
 
 
-@interface TBNodeServer : NSObject
+@interface TBNodeProcess : NSObject
 
-+ (id)sharedServer;
++ (id)sharedProcess;
 
 + (NSURL *)nodeProcessURL;
 
@@ -28,9 +28,9 @@ extern NSString * const TBNodeServerLogNotification;
 
 - (BOOL)createStreamPairToServerWithInputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
 
-- (BOOL)isServerRunning;
+- (BOOL)isProcessRunning;
 
-- (void)stopServer;
+- (void)stopProcess;
 
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Zac Bowling. All rights reserved.
 //
 
-#import "TBNodeServer.h"
+#import "TBNodeProcess.h"
 #import "NSFileManager+TB.h"
 #include <sys/types.h>
 #include <sys/un.h>
@@ -17,13 +17,13 @@ NSString * const TBNodeServerDidStartNotification = @"TBNodeServerDidStartNotifi
 NSString * const TBNodeServerDidErrorNotification = @"TBNodeServerDidErrorNotification";
 NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
 
-@interface TBNodeServer()
+@interface TBNodeProcess()
 
-- (void)startServer;
+- (void)startProcess;
 
 @end
 
-@implementation TBNodeServer {
+@implementation TBNodeProcess {
     NSTask *_task;
     NSFileHandle *_outFile;
     NSFileHandle *_errFile;
@@ -33,11 +33,11 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
 }
 
 
-+ (id)sharedServer {
-    static TBNodeServer *sharedServer;
++ (id)sharedProcess {
+    static TBNodeProcess *sharedServer;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedServer = [[TBNodeServer alloc] initWithScriptPath:@"app.js"];
+        sharedServer = [[TBNodeProcess alloc] initWithScriptPath:@"app.js"];
     });
     return sharedServer;
 }
@@ -48,10 +48,10 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
         _scriptPath = scriptPath;
         _shouldStop = NO;
         _outputBuffer = [NSMutableString string];
-        if ([self isServerRunning]) {
-            [self stopServer];
+        if ([self isProcessRunning]) {
+            [self stopProcess];
         }
-        [self startServer];
+        [self startProcess];
     }
     return self;
 }
@@ -79,7 +79,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"pid"]];
 }
 
-- (BOOL)isServerRunning {
+- (BOOL)isProcessRunning {
     NSFileManager *fm = [NSFileManager defaultManager];
     if ([fm fileExistsAtPath:[self serverSocketPath]])
     {
@@ -145,7 +145,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     [fileHandle waitForDataInBackgroundAndNotify];
 }
 
-- (void)startServer {
+- (void)startProcess {
     NSString *fullScriptPath = [[[[self class] scriptDirectory] URLByAppendingPathComponent:_scriptPath] path];
     
     _task = [[NSTask alloc] init];
@@ -187,7 +187,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     [self writeTaskProcessIdentiferToDisk];
 }
 
--(void)stopServer {
+- (void)stopProcess {
     _shouldStop = YES;
     if (_task) {
         [_task terminate];
@@ -195,7 +195,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
         sleep(1); //sigh...
     }
     
-    if ([self isServerRunning])
+    if ([self isProcessRunning])
     {
         kill([self readProcessIdentiferFromDisk], SIGKILL);
     }

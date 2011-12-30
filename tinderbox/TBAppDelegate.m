@@ -7,7 +7,7 @@
 //
 
 #import "TBAppDelegate.h"
-#import "TBNodeServer.h"
+#import "TBNodeProcess.h"
 #import "TBNodeURLProtocol.h"
 #import "TBNodeWindowController.h"
 #import "TBRoomWindowController.h"
@@ -21,9 +21,9 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     _roomWindows = [NSMutableDictionary dictionary];
-    [TBNodeServer sharedServer];
+    [TBNodeProcess sharedProcess];
     [NSURLProtocol registerClass:[TBNodeURLProtocol class]];
-    [[NSNotificationCenter defaultCenter] addObserverForName:TBNodeServerDidStartNotification object:[TBNodeServer sharedServer] queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification *note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:TBNodeServerDidStartNotification object:[TBNodeProcess sharedProcess] queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification *note) {
         _lobbyWindow = [[TBNodeWindowController alloc] initWithWindowNibName:nil defaultURL:[NSURL URLWithString:@"http://tinderbox.local/main"]];
         [_lobbyWindow showWindow:self];
         
@@ -33,7 +33,7 @@
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    [[TBNodeServer sharedServer] stopServer];
+    [[TBNodeProcess sharedProcess] stopProcess];
 }
 
 - (void)showRoomWindowWithRoomID:(NSString *)roomID {

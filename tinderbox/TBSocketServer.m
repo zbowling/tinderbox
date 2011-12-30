@@ -6,20 +6,23 @@
 //  Copyright (c) 2011 Zac Bowling. All rights reserved.
 //
 
-#import "TBNodeCallbackServer.h"
+#import "TBSocketServer.h"
+#import "TBSocketConnection.h"
 #include <sys/types.h>
 #include <sys/un.h>
 #include <sys/socket.h>
 
-@implementation TBNodeCallbackServer {
+@implementation TBSocketServer {
     NSString *_socketPath;
     CFSocketRef _socket;
+    NSMutableSet *_connections;
 }
 
 - (id)initWithSocketPath:(NSString *)path {
     self = [super init];
     if (self) {
         _socketPath = [path copy];
+        _connections = [NSMutableSet set];
     }
     return self;
 }
@@ -29,6 +32,11 @@
     {
         CFRelease(_socket), _socket = NULL;
     }
+}
+
+-(void)invalidateConnection:(TBSocketConnection *)connection {
+    NSAssert([_connections member:connection] != nil, @"Connection unknown to server %@", connection);
+    [_connections removeObject:connection];
 }
 
 - (BOOL)cleanup:(NSError **)error {
@@ -46,7 +54,6 @@
 }
 
 
-
 - (void)accept:(CFSocketNativeHandle)nativeSocketHandle {
     CFReadStreamRef readStream = NULL;
 	CFWriteStreamRef writeStream = NULL;
@@ -55,6 +62,8 @@
         CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
         CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
         
+        TBSocketConnection *connection = [[TBSocketConnection alloc] initWithInputStream:(__bridge NSInputStream *)readStream outputStream:(__bridge NSOutputStream *)writeStream socketServer:self];
+        [_connections addObject:connection];
     }
     else {
         close(nativeSocketHandle);
@@ -64,7 +73,7 @@
 }
 
 static void ServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, CFDataRef address, const void *data, void *info) {
-    TBNodeCallbackServer *nodeServer = (__bridge TBNodeCallbackServer *)data;
+    TBSocketServer *nodeServer = (__bridge TBSocketServer *)data;
     if (kCFSocketAcceptCallBack == type) { 
         CFSocketNativeHandle nativeSocketHandle = *(CFSocketNativeHandle *)data;
         [nodeServer accept:nativeSocketHandle];

@@ -19,7 +19,7 @@
 		D9131A4114A6A24700EF9073 /* tinderboxTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A4014A6A24700EF9073 /* tinderboxTests.m */; };
 		D9131A4B14A6A28300EF9073 /* BasicWebWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9131A4A14A6A28300EF9073 /* BasicWebWindow.xib */; };
 		D9131A4E14A6A95900EF9073 /* TBNodeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A4D14A6A95900EF9073 /* TBNodeWindowController.m */; };
-		D9131A5214A6AB0900EF9073 /* TBNodeServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A5114A6AB0900EF9073 /* TBNodeServer.m */; };
+		D9131A5214A6AB0900EF9073 /* TBNodeProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = D9131A5114A6AB0900EF9073 /* TBNodeProcess.m */; };
 		D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */; };
 		D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */; };
 		D91323D914A8137000EF9073 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D91323D814A8137000EF9073 /* WebKit.framework */; };
@@ -30,7 +30,10 @@
 		D91323E914A91F4500EF9073 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D91323E814A91F4500EF9073 /* Preferences.xib */; };
 		D91323EC14AACCF500EF9073 /* TBWebViewAppScriptableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */; };
 		D91323EF14AACE3500EF9073 /* TBRoomWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */; };
-		D91323F314AC2D0300EF9073 /* TBNodeCallbackServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323F214AC2D0200EF9073 /* TBNodeCallbackServer.m */; };
+		D91323F314AC2D0300EF9073 /* TBSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323F214AC2D0200EF9073 /* TBSocketServer.m */; };
+		D9AAB67F14AE459D0001F15D /* TBSocketRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AAB67E14AE459D0001F15D /* TBSocketRequest.m */; };
+		D9AAB68314AE488B0001F15D /* TBSocketConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D9AAB68214AE488B0001F15D /* TBSocketConnection.m */; };
+		D9D63DCD14AD281F00AAD6F2 /* RoomWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9D63DCC14AD281F00AAD6F2 /* RoomWindow.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,8 +69,8 @@
 		D9131A4A14A6A28300EF9073 /* BasicWebWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BasicWebWindow.xib; sourceTree = "<group>"; };
 		D9131A4C14A6A95900EF9073 /* TBNodeWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeWindowController.h; sourceTree = "<group>"; };
 		D9131A4D14A6A95900EF9073 /* TBNodeWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeWindowController.m; sourceTree = "<group>"; };
-		D9131A5014A6AB0900EF9073 /* TBNodeServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeServer.h; sourceTree = "<group>"; };
-		D9131A5114A6AB0900EF9073 /* TBNodeServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeServer.m; sourceTree = "<group>"; };
+		D9131A5014A6AB0900EF9073 /* TBNodeProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeProcess.h; sourceTree = "<group>"; };
+		D9131A5114A6AB0900EF9073 /* TBNodeProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeProcess.m; sourceTree = "<group>"; };
 		D91323C514A7DF9A00EF9073 /* NSFileManager+TB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+TB.h"; path = "tinderbox/NSFileManager+TB.h"; sourceTree = "<group>"; };
 		D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+TB.m"; path = "tinderbox/NSFileManager+TB.m"; sourceTree = "<group>"; };
 		D91323CA14A7EFC400EF9073 /* TBNodeURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeURLProtocol.h; sourceTree = "<group>"; };
@@ -84,8 +87,13 @@
 		D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBWebViewAppScriptableObject.m; sourceTree = "<group>"; };
 		D91323ED14AACE3500EF9073 /* TBRoomWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBRoomWindowController.h; sourceTree = "<group>"; };
 		D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBRoomWindowController.m; sourceTree = "<group>"; };
-		D91323F114AC2D0200EF9073 /* TBNodeCallbackServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBNodeCallbackServer.h; sourceTree = "<group>"; };
-		D91323F214AC2D0200EF9073 /* TBNodeCallbackServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBNodeCallbackServer.m; sourceTree = "<group>"; };
+		D91323F114AC2D0200EF9073 /* TBSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketServer.h; sourceTree = "<group>"; };
+		D91323F214AC2D0200EF9073 /* TBSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketServer.m; sourceTree = "<group>"; };
+		D9AAB67D14AE459D0001F15D /* TBSocketRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketRequest.h; sourceTree = "<group>"; };
+		D9AAB67E14AE459D0001F15D /* TBSocketRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketRequest.m; sourceTree = "<group>"; };
+		D9AAB68114AE488B0001F15D /* TBSocketConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketConnection.h; sourceTree = "<group>"; };
+		D9AAB68214AE488B0001F15D /* TBSocketConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketConnection.m; sourceTree = "<group>"; };
+		D9D63DCC14AD281F00AAD6F2 /* RoomWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RoomWindow.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +216,7 @@
 				D9131A2B14A6A24600EF9073 /* MainMenu.xib */,
 				D9131A4A14A6A28300EF9073 /* BasicWebWindow.xib */,
 				D91323E814A91F4500EF9073 /* Preferences.xib */,
+				D9D63DCC14AD281F00AAD6F2 /* RoomWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -215,12 +224,16 @@
 		D91323C814A7E07500EF9073 /* Server */ = {
 			isa = PBXGroup;
 			children = (
-				D9131A5014A6AB0900EF9073 /* TBNodeServer.h */,
-				D9131A5114A6AB0900EF9073 /* TBNodeServer.m */,
+				D9131A5014A6AB0900EF9073 /* TBNodeProcess.h */,
+				D9131A5114A6AB0900EF9073 /* TBNodeProcess.m */,
 				D91323CA14A7EFC400EF9073 /* TBNodeURLProtocol.h */,
 				D91323CB14A7EFC400EF9073 /* TBNodeURLProtocol.m */,
-				D91323F114AC2D0200EF9073 /* TBNodeCallbackServer.h */,
-				D91323F214AC2D0200EF9073 /* TBNodeCallbackServer.m */,
+				D91323F114AC2D0200EF9073 /* TBSocketServer.h */,
+				D91323F214AC2D0200EF9073 /* TBSocketServer.m */,
+				D9AAB67D14AE459D0001F15D /* TBSocketRequest.h */,
+				D9AAB67E14AE459D0001F15D /* TBSocketRequest.m */,
+				D9AAB68114AE488B0001F15D /* TBSocketConnection.h */,
+				D9AAB68214AE488B0001F15D /* TBSocketConnection.m */,
 			);
 			name = Server;
 			sourceTree = "<group>";
@@ -333,6 +346,7 @@
 				D91323DC14A86FC700EF9073 /* server in Resources */,
 				D91323DE14A8700200EF9073 /* node in Resources */,
 				D91323E914A91F4500EF9073 /* Preferences.xib in Resources */,
+				D9D63DCD14AD281F00AAD6F2 /* RoomWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,14 +384,16 @@
 				D9131A2314A6A24600EF9073 /* main.m in Sources */,
 				D9131A2A14A6A24600EF9073 /* TBAppDelegate.m in Sources */,
 				D9131A4E14A6A95900EF9073 /* TBNodeWindowController.m in Sources */,
-				D9131A5214A6AB0900EF9073 /* TBNodeServer.m in Sources */,
+				D9131A5214A6AB0900EF9073 /* TBNodeProcess.m in Sources */,
 				D91323C714A7DF9A00EF9073 /* NSFileManager+TB.m in Sources */,
 				D91323CC14A7EFC400EF9073 /* TBNodeURLProtocol.m in Sources */,
 				D91323E414A89CE700EF9073 /* TBWebView.m in Sources */,
 				D91323E714A89EAB00EF9073 /* TBWebViewPreferencesScriptableObject.m in Sources */,
 				D91323EC14AACCF500EF9073 /* TBWebViewAppScriptableObject.m in Sources */,
 				D91323EF14AACE3500EF9073 /* TBRoomWindowController.m in Sources */,
-				D91323F314AC2D0300EF9073 /* TBNodeCallbackServer.m in Sources */,
+				D91323F314AC2D0300EF9073 /* TBSocketServer.m in Sources */,
+				D9AAB67F14AE459D0001F15D /* TBSocketRequest.m in Sources */,
+				D9AAB68314AE488B0001F15D /* TBSocketConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,6 +567,7 @@
 				D9131A4614A6A24700EF9073 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D9131A4714A6A24700EF9073 /* Build configuration list for PBXNativeTarget "tinderboxTests" */ = {
 			isa = XCConfigurationList;
@@ -559,6 +576,7 @@
 				D9131A4914A6A24700EF9073 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

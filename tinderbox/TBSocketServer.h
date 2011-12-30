@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TBNodeCallbackServer : NSObject<NSStreamDelegate>
+@class TBSocketConnection;
+
+@interface TBSocketServer : NSObject<NSStreamDelegate>
 
 -(id)initWithSocketPath:(NSString *)path;
+
+-(void)invalidateConnection:(TBSocketConnection *)connection;
 
 @end

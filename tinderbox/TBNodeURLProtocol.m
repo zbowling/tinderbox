@@ -7,7 +7,7 @@
 //
 
 #import "TBNodeURLProtocol.h"
-#import "TBNodeServer.h"
+#import "TBNodeProcess.h"
 
 #include <sys/types.h>
 #include <sys/un.h>
@@ -365,7 +365,7 @@
     
     NSInputStream *inputStream;
     NSOutputStream *outputStream;
-    if ([[TBNodeServer sharedServer] createStreamPairToServerWithInputStream:&inputStream outputStream:&outputStream]) {
+    if ([[TBNodeProcess sharedProcess] createStreamPairToServerWithInputStream:&inputStream outputStream:&outputStream]) {
     
         _readStream = inputStream;
         _writeStream = outputStream;
