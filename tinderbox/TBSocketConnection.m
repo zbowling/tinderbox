@@ -9,6 +9,7 @@
 #import "TBSocketConnection.h"
 #import "TBSocketServer.h"
 #import "TBSocketRequest.h"
+#import "TBSocketResponse.h"
 
 @implementation TBSocketConnection {
     NSInputStream *_inputStream;
@@ -17,6 +18,7 @@
     NSMutableData *_inputBuffer;
     NSMutableData *_outputBuffer;
     NSMutableArray *_requests;
+    NSMutableDictionary *_requestResponses;
     
     TBSocketServer *_server;
     
@@ -117,9 +119,12 @@
         return NO;
     }
     
-    TBSocketRequest *request = [[TBSocketRequest alloc] initWithRequest:working connection:self];
+    TBSocketRequest *request = [[TBSocketRequest alloc] initWithHTTPMessage:working];
     if (!_requests) {
         _requests = [[NSMutableArray alloc] init];
+    }
+    if (!_requestResponses) {
+        _requestResponses = [NSMutableDictionary dictionary];
     }
     [_requests addObject:request];
     
@@ -162,8 +167,10 @@
     NSUInteger cnt = _requests ? [_requests count] : 0;
     TBSocketRequest *req = (0 < cnt) ? [_requests objectAtIndex:0] : nil;
     
-    CFHTTPMessageRef cfresp = req ? [req response] : NULL;
-    if (!cfresp) return;
+    TBSocketResponse *response = [_requestResponses objectForKey:[NSValue valueWithNonretainedObject:req]];
+    if (!response) return;
+    CFHTTPMessageRef cfresp = req ? [response HTTPMessage]: NULL;
+
     
     if (!_outputBuffer) {
         _outputBuffer = [[NSMutableData alloc] init];
@@ -184,7 +191,8 @@
         }
     }
     
-    NSInputStream *respStream = [req responseBodyStream];
+
+    NSInputStream *respStream = [response responseBodyStream];
     if (respStream) {
         if ([respStream streamStatus] == NSStreamStatusNotOpen) {
             [respStream open];
@@ -220,27 +228,28 @@
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent {
     switch(streamEvent) {
-        case NSStreamEventHasBytesAvailable:;
-            uint8_t buf[16 * 1024];
-            uint8_t *buffer = NULL;
-            NSUInteger len = 0;
-            if (![_inputStream getBuffer:&buffer length:&len]) {
-                NSInteger amount = [_inputStream read:buf maxLength:sizeof(buf)];
-                buffer = buf;
-                len = amount;
-            }
-            if (0 < len) {
-                if (!_inputBuffer) {
-                    _inputBuffer = [[NSMutableData alloc] init];
+        case NSStreamEventHasBytesAvailable: {
+                uint8_t buf[16 * 1024];
+                uint8_t *buffer = NULL;
+                NSUInteger len = 0;
+                if (![_inputStream getBuffer:&buffer length:&len]) {
+                    NSInteger amount = [_inputStream read:buf maxLength:sizeof(buf)];
+                    buffer = buf;
+                    len = amount;
                 }
-                [_inputBuffer appendBytes:buffer length:len];
+                if (0 < len) {
+                    if (!_inputBuffer) {
+                        _inputBuffer = [[NSMutableData alloc] init];
+                    }
+                    [_inputBuffer appendBytes:buffer length:len];
+                }
+                do {} while ([self processIncomingBytes]);
             }
-            do {} while ([self processIncomingBytes]);
             break;
-        case NSStreamEventHasSpaceAvailable:;
+        case NSStreamEventHasSpaceAvailable:
             [self processOutgoingBytes];
             break;
-        case NSStreamEventEndEncountered:;
+        case NSStreamEventEndEncountered:
             [self processIncomingBytes];
             if (stream == _outputStream) {
                 // When the output stream is closed, no more writing will succeed and
@@ -249,7 +258,7 @@
                 [self invalidate];
             }
             break;
-        case NSStreamEventErrorOccurred:;
+        case NSStreamEventErrorOccurred:
             NSLog(@"TBSocketStream stream error: %@", [stream streamError]);
             break;
         default:
@@ -257,35 +266,32 @@
     }
 }
 
-- (void)performDefaultRequestHandling:(TBSocketRequest *)message {
-    CFHTTPMessageRef request = [message request];
+- (void)performDefaultRequestHandling:(TBSocketRequest *)request {
+    CFHTTPMessageRef message = [request requestHTTPMessage];
     
-    NSString *vers = (__bridge_transfer NSString *)CFHTTPMessageCopyVersion(request);
-    if (!vers || ![vers isEqual:(id)kCFHTTPVersion1_1]) {
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 505, NULL, (__bridge CFStringRef)vers); // Version Not Supported
-        [message setResponse:response];
-        CFRelease(response);
+    NSString *vers = [request HTTPVersion];
+    if (!vers || ![vers isEqual:(id)kCFHTTPVersion1_1] || ![vers isEqual:(id)kCFHTTPVersion1_0]) {
+        [self sendResponse:[[TBSocketResponse alloc]initWithStatusCode:505 HTTPVersion:vers headerFields:nil] forRequest:request];
         return;
     }
     
-    NSString *method = (__bridge_transfer id)CFHTTPMessageCopyRequestMethod(request);
+    NSString *method = [request HTTPMethod];
     if (!method) {
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 400, NULL, kCFHTTPVersion1_1); // Bad Request
-        [message setResponse:response];
-        CFRelease(response);
+        [self sendResponse:[[TBSocketResponse alloc]initWithStatusCode:400 HTTPVersion:vers headerFields:nil] forRequest:request]; // Bad Request
         return;
     }
     
     if ([method isEqual:@"GET"] || [method isEqual:@"HEAD"]) {
-        CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 404, NULL, kCFHTTPVersion1_1); // Not Found
-        [message setResponse:response];
-        CFRelease(response);
+        [self sendResponse:[[TBSocketResponse alloc]initWithStatusCode:404 HTTPVersion:vers headerFields:nil] forRequest:request]; // Not Found
         return;
     }
     
-    CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 405, NULL, kCFHTTPVersion1_1); // Method Not Allowed
-    [message setResponse:response];
-    CFRelease(response);
+    [self sendResponse:[[TBSocketResponse alloc]initWithStatusCode:405 HTTPVersion:vers headerFields:nil] forRequest:request]; // Method Not Allowed
+    
+}
+
+- (void)sendResponse:(TBSocketResponse *)response forRequest:(TBSocketRequest *)request {
+    [_requestResponses setObject:response forKey:[NSValue valueWithNonretainedObject:request]];
 }
 
 @end

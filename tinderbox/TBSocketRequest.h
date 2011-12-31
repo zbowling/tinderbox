@@ -12,11 +12,13 @@
 
 @interface TBSocketRequest : NSObject
 
-- (id)initWithRequest:(CFHTTPMessageRef)requestRef connection:(TBSocketConnection *)connnection;
+- (id)initWithHTTPMessage:(CFHTTPMessageRef)requestRef;
 
-@property (nonatomic, readonly) TBSocketConnection *connection;
-@property (nonatomic, strong) NSInputStream *responseBodyStream;
-@property (nonatomic, readonly) CFHTTPMessageRef request;
-@property (nonatomic, readwrite) CFHTTPMessageRef response;
+@property (nonatomic, readonly) CFHTTPMessageRef requestHTTPMessage;
+@property (nonatomic, readonly) NSString *HTTPMethod;
+@property (nonatomic, readonly) NSString *HTTPVersion;
+@property (nonatomic, readonly) NSURL *URL;
+@property (nonatomic, readonly) NSDictionary *allHTTPHeaderFields;
+@property (nonatomic, readonly) NSData *HTTPBody;
 
 @end

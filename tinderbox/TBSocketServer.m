@@ -8,6 +8,7 @@
 
 #import "TBSocketServer.h"
 #import "TBSocketConnection.h"
+#import "TBSocketRequestHandler.h"
 #include <sys/types.h>
 #include <sys/un.h>
 #include <sys/socket.h>
@@ -16,6 +17,7 @@
     NSString *_socketPath;
     CFSocketRef _socket;
     NSMutableSet *_connections;
+    NSMutableArray *_requestRoutes;
 }
 
 - (id)initWithSocketPath:(NSString *)path {
@@ -23,6 +25,7 @@
     if (self) {
         _socketPath = [path copy];
         _connections = [NSMutableSet set];
+        _requestRoutes = [NSMutableArray array];
     }
     return self;
 }
@@ -80,7 +83,7 @@ static void ServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, 
     }
 }
 
-- (BOOL)start:(NSError **)error {
+- (BOOL)startServer:(NSError **)error {
     if (![self cleanup:error]) return NO;
     
     struct sockaddr_un *sockaddr = malloc(sizeof(struct sockaddr_un));
@@ -114,18 +117,40 @@ static void ServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, 
     CFRunLoopAddSource(cfrl, source, kCFRunLoopCommonModes);
     CFRelease(source);
     
-    
     return YES;
 }
 
-- (BOOL)stop {
+- (BOOL)stopServer {
     if (_socket != NULL) {
         CFSocketInvalidate(_socket);
         CFRelease(_socket);
         _socket = NULL;
     }
     return YES;
-    
+}
+
+- (NSArray *)requestRoutes {
+    return [_requestRoutes copy];
+}
+
+- (void)addRequestRoute:(TBSocketRoute *)requestRoute {
+    [_requestRoutes addObject:requestRoute];
+}
+
+- (void)insertRequestRoute:(TBSocketRoute *)requestRoute atIndex:(NSUInteger)index {
+    [_requestRoutes insertObject:requestRoute atIndex:index];
+}
+
+- (void)removeRequestRoute:(TBSocketRoute *)requestRoute {
+    NSUInteger idx = [_requestRoutes indexOfObject:_requestRoutes];
+    NSAssert(idx!=NSNotFound, @"route not registered");
+    if (idx!=NSNotFound) {        
+        [_requestRoutes removeObjectAtIndex:idx];
+    }
+}
+
+- (void)removeAllRequestRoutes {
+    [_requestRoutes removeAllObjects];
 }
 
 @end

@@ -8,12 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol TBSocketRequestHandler;
 @class TBSocketConnection;
+@class TBSocketRoute;
 
 @interface TBSocketServer : NSObject<NSStreamDelegate>
 
 -(id)initWithSocketPath:(NSString *)path;
 
 -(void)invalidateConnection:(TBSocketConnection *)connection;
+
+@property (readonly) NSArray *requestRoutes;
+
+- (void)addRequestRoute:(TBSocketRoute *)requestRoute;
+- (void)insertRequestRoute:(TBSocketRoute *)requestRoute atIndex:(NSUInteger)index;
+- (void)removeRequestRoute:(TBSocketRoute *)requestRoute;
+- (void)removeAllRequestRoutes;
+
+
 
 @end

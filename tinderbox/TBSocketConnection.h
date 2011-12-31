@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@class TBSocketRequest, TBSocketServer;
+@class TBSocketRequest, TBSocketServer, TBSocketResponse;
+
 @interface TBSocketConnection : NSObject <NSStreamDelegate>
 
 - (id)initWithInputStream:(NSInputStream *)inputStream outputStream:(NSOutputStream *)outputStream socketServer:(TBSocketServer *)server;
@@ -23,5 +24,7 @@
 - (TBSocketRequest *)nextRequest;
 
 @property (copy) BOOL (^requestReceievedHandler)(TBSocketRequest *request);
+
+- (void)sendResponse:(TBSocketResponse *)response forRequest:(TBSocketRequest *)request;
 
 @end

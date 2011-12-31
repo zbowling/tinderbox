@@ -7,24 +7,17 @@
 //
 
 #import "TBSocketRequest.h"
-#import "TBSocketConnection.h"
 
 @implementation TBSocketRequest {
     CFHTTPMessageRef _requestRef;
-    CFHTTPMessageRef _responseRef;
-    TBSocketConnection *_connection;
-    NSInputStream *_responseStream;
 }
 
-@synthesize responseBodyStream=_responseStream;
-
-- (id)initWithRequest:(CFHTTPMessageRef)requestRef connection:(TBSocketConnection *)connnection
+- (id)initWithHTTPMessage:(CFHTTPMessageRef)requestRef
 {
     self = [super init];
     if (self)
     {
         _requestRef = (CFHTTPMessageRef)CFRetain(requestRef);
-        _connection = connnection;
     }
     return self;
 }
@@ -33,33 +26,31 @@
 {
     if (_requestRef != NULL)
         CFRelease(_requestRef), _requestRef = NULL;
-    if (_responseRef != NULL)
-        CFRelease(_responseRef), _responseRef = NULL;
 }
 
 
-- (TBSocketConnection *)connection {
-    return _connection;
-}
-
-- (CFHTTPMessageRef)request {
+- (CFHTTPMessageRef)requestHTTPMessage {
     return _requestRef;
 }
 
-- (CFHTTPMessageRef)response {
-    return _responseRef;
+- (NSDictionary *)allHTTPHeaderFields {
+    return (__bridge_transfer NSDictionary *)CFHTTPMessageCopyAllHeaderFields(_requestRef);
 }
 
-- (void)setResponse:(CFHTTPMessageRef)value {
-    if (value != _responseRef) {
-        if (_responseRef) CFRelease(_responseRef);
-        _responseRef = (CFHTTPMessageRef)CFRetain(value);
-        if (_responseRef) {
-            // check to see if the response can now be sent out
-            [_connection processOutgoingBytes];
-        }
-    }
+- (NSString *)HTTPMethod {
+    return (__bridge_transfer NSString *)CFHTTPMessageCopyRequestMethod(_requestRef);
 }
 
+- (NSURL *)URL {
+    return (__bridge_transfer NSURL *)CFHTTPMessageCopyRequestURL(_requestRef);
+}
+
+- (NSData *)HTTPBody {
+    return (__bridge_transfer NSData *)CFHTTPMessageCopyBody(_requestRef);
+}
+
+- (NSString *)HTTPVersion {
+    return (__bridge_transfer NSString *)CFHTTPMessageCopyVersion(_requestRef);
+}
 
 @end
