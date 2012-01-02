@@ -73,12 +73,12 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
 
 - (NSString *)callbackSocketPath {
     NSFileManager *fm = [NSFileManager defaultManager];
-    return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"callback"]];
+    return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"frontend"]];
 }
 
 - (NSString *)serverSocketPath {
     NSFileManager *fm = [NSFileManager defaultManager];
-    return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"server"]];
+    return [[fm applicationSupportDirectory] stringByAppendingPathComponent:[_scriptPath stringByAppendingPathExtension:@"backend"]];
 }
 
 - (NSString *)serverPidFilePath {
@@ -155,7 +155,8 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
 - (void)startProcess {
     _socketServer = [[TBSocketServer alloc] initWithSocketPath:[self callbackSocketPath]];
     
-    TBSocketBlockRequestHandler *dateHandler = [TBSocketBlockRequestHandler handlerWithBlock:^(TBSocketBlockRequestHandler *handler, TBSocketRequest *request) {
+    TBSocketBlockRequestHandler *dateHandler = 
+      [TBSocketBlockRequestHandler handlerWithBlock:^(TBSocketBlockRequestHandler *handler, TBSocketRequest *request) {
         [request.connection sendResponse:[[NSDate date] description] forRequest:request];
     }];
     [_socketServer addRequestHandler:[TBSocketRoute routeWithPathPrefixString:@"/date/" requestHandler:dateHandler]];
