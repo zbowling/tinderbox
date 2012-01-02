@@ -8,6 +8,11 @@
 
 #import "TBNodeProcess.h"
 #import "NSFileManager+TB.h"
+#import "TBSocketServer.h"
+#import "TBSocketRoute.h"
+#import "TBSocketRequest.h"
+#import "TBSocketBlockRequestHandler.h"
+#import "TBSocketConnection.h"
 #include <sys/types.h>
 #include <sys/un.h>
 #include <sys/socket.h>
@@ -30,6 +35,8 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     NSString *_scriptPath;
     NSMutableString *_outputBuffer;
     BOOL _shouldStop;
+    
+    TBSocketServer *_socketServer;
 }
 
 
@@ -146,6 +153,19 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
 }
 
 - (void)startProcess {
+    _socketServer = [[TBSocketServer alloc] initWithSocketPath:[self callbackSocketPath]];
+    
+    TBSocketBlockRequestHandler *dateHandler = [TBSocketBlockRequestHandler handlerWithBlock:^(TBSocketBlockRequestHandler *handler, TBSocketRequest *request) {
+        [request.connection sendResponse:[[NSDate date] description] forRequest:request];
+    }];
+    [_socketServer addRequestHandler:[TBSocketRoute routeWithPathPrefixString:@"/date/" requestHandler:dateHandler]];
+    
+    NSError *error;
+    if(![_socketServer startServer:&error]) {
+        NSLog(@"error starting socket server %@", error);
+    }
+    
+    
     NSString *fullScriptPath = [[[[self class] scriptDirectory] URLByAppendingPathComponent:_scriptPath] path];
     
     _task = [[NSTask alloc] init];

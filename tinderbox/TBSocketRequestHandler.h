@@ -13,6 +13,11 @@
 
 @protocol TBSocketRequestHandler <NSObject>
 
-- (void)processRequest:(TBSocketRequest *)request withSocketConnection:(TBSocketConnection *)connection; 
+- (void)handleRequest:(TBSocketRequest *)request; 
+
+@optional
+- (BOOL)canHandleRequest:(TBSocketRequest *)request;
++ (BOOL)canHandleRequest:(TBSocketRequest *)request;
+
 
 @end

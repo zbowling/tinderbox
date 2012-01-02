@@ -119,7 +119,7 @@
         return NO;
     }
     
-    TBSocketRequest *request = [[TBSocketRequest alloc] initWithHTTPMessage:working];
+    TBSocketRequest *request = [[TBSocketRequest alloc] initWithHTTPMessage:working connection:self];
     if (!_requests) {
         _requests = [[NSMutableArray alloc] init];
     }
@@ -128,10 +128,12 @@
     }
     [_requests addObject:request];
     
+    BOOL requestHandled = NO;
     if (self.requestReceievedHandler) {
-        self.requestReceievedHandler(request);
+        requestHandled = self.requestReceievedHandler(request);
     }
-    else {
+    
+    if (!requestHandled) {
         [self performDefaultRequestHandling:request];
     }
     
@@ -266,8 +268,42 @@
     }
 }
 
+- (TBSocketResponse *)defaultResponseForObject:(id)response {
+    if (!response) {
+        return [TBSocketResponse responseWithStatusCode:200];
+    }
+    
+    if ([response isKindOfClass:[TBSocketResponse class]]){
+        return response;
+    }
+
+    if ([response isKindOfClass:[NSArray class]] || [response isKindOfClass:[NSDictionary class]]) {
+        NSError *error;
+        NSData *responseData = [NSJSONSerialization dataWithJSONObject:response options:NSJSONWritingPrettyPrinted error:&error];
+        if (!responseData) {
+            NSLog(@"error seralizating return value %@",error);
+            return [TBSocketResponse serverErrorResponseWithError:error]; 
+        }
+        return [TBSocketResponse responseWithStatusCode:200 contentType:@"application/json" body:responseData];
+    }
+    
+    if ([response isKindOfClass:[NSData class]]) {
+        return [TBSocketResponse responseWithStatusCode:200 contentType:@"application/octet-stream" body:response]; 
+    }
+    
+    if ([response isKindOfClass:[NSString class]]) {
+        return [TBSocketResponse responseWithStatusCode:200 contentType:@"text/plain; charset=UTF-8" body:[response dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    return [TBSocketResponse responseWithStatusCode:200 contentType:@"text/plain; charset=UTF-8" body:[[response description] dataUsingEncoding:NSUTF8StringEncoding]];
+}
+
+- (void)sendResponse:(id)response forRequest:(TBSocketRequest *)request {
+    TBSocketResponse *responseObject = [self defaultResponseForObject:response];
+    [_requestResponses setObject:responseObject forKey:[NSValue valueWithNonretainedObject:request]];
+}
+
 - (void)performDefaultRequestHandling:(TBSocketRequest *)request {
-    CFHTTPMessageRef message = [request requestHTTPMessage];
     
     NSString *vers = [request HTTPVersion];
     if (!vers || ![vers isEqual:(id)kCFHTTPVersion1_1] || ![vers isEqual:(id)kCFHTTPVersion1_0]) {
@@ -287,11 +323,6 @@
     }
     
     [self sendResponse:[[TBSocketResponse alloc]initWithStatusCode:405 HTTPVersion:vers headerFields:nil] forRequest:request]; // Method Not Allowed
-    
-}
-
-- (void)sendResponse:(TBSocketResponse *)response forRequest:(TBSocketRequest *)request {
-    [_requestResponses setObject:response forKey:[NSValue valueWithNonretainedObject:request]];
 }
 
 @end

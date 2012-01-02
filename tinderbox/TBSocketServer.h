@@ -18,13 +18,16 @@
 
 -(void)invalidateConnection:(TBSocketConnection *)connection;
 
-@property (readonly) NSArray *requestRoutes;
+@property (readonly) NSArray *requestHandlers;
 
-- (void)addRequestRoute:(TBSocketRoute *)requestRoute;
-- (void)insertRequestRoute:(TBSocketRoute *)requestRoute atIndex:(NSUInteger)index;
-- (void)removeRequestRoute:(TBSocketRoute *)requestRoute;
-- (void)removeAllRequestRoutes;
+- (void)addRequestHandler:(id<TBSocketRequestHandler>)requestHandler;
+- (void)insertRequestHandler:(id<TBSocketRequestHandler>)requestHandler atIndex:(NSUInteger)index;
+- (void)removeRequestHandler:(id<TBSocketRequestHandler>)requestHandler;
+- (void)removeAllRequestHandlers;
 
+
+- (BOOL)startServer:(NSError **)error;
+- (BOOL)stopServer;
 
 
 @end

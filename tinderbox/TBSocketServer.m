@@ -7,8 +7,11 @@
 //
 
 #import "TBSocketServer.h"
+#import "TBSocketRequest.h"
+#import "TBSocketResponse.h"
 #import "TBSocketConnection.h"
 #import "TBSocketRequestHandler.h"
+#import "TBSocketRoute.h"
 #include <sys/types.h>
 #include <sys/un.h>
 #include <sys/socket.h>
@@ -17,7 +20,7 @@
     NSString *_socketPath;
     CFSocketRef _socket;
     NSMutableSet *_connections;
-    NSMutableArray *_requestRoutes;
+    NSMutableArray *_requestHandlers;
 }
 
 - (id)initWithSocketPath:(NSString *)path {
@@ -25,7 +28,7 @@
     if (self) {
         _socketPath = [path copy];
         _connections = [NSMutableSet set];
-        _requestRoutes = [NSMutableArray array];
+        _requestHandlers = [NSMutableArray array];
     }
     return self;
 }
@@ -66,6 +69,25 @@
         CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
         
         TBSocketConnection *connection = [[TBSocketConnection alloc] initWithInputStream:(__bridge NSInputStream *)readStream outputStream:(__bridge NSOutputStream *)writeStream socketServer:self];
+        
+        
+        connection.requestReceievedHandler = ^(TBSocketRequest *request){
+            for (id<TBSocketRequestHandler> handler in _requestHandlers) {
+                BOOL canHandleRequest = NO;
+                if ([handler respondsToSelector:@selector(canHandleRequest:)]) {
+                    canHandleRequest = [handler canHandleRequest:request];
+                }
+                if (!canHandleRequest && [[handler class] respondsToSelector:@selector(canHandleRequest:)]){
+                    canHandleRequest = [(NSObject<TBSocketRequestHandler> *)[handler class] canHandleRequest:request]; //This is the wrong cast, but the ARC warning is wrong.
+                }
+                if (canHandleRequest) {
+                    [handler handleRequest:request];
+                    return YES;
+                }
+            }
+            return NO;
+        };
+    
         [_connections addObject:connection];
     }
     else {
@@ -129,28 +151,28 @@ static void ServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, 
     return YES;
 }
 
-- (NSArray *)requestRoutes {
-    return [_requestRoutes copy];
+- (NSArray *)requestHandlers {
+    return [_requestHandlers copy];
 }
 
-- (void)addRequestRoute:(TBSocketRoute *)requestRoute {
-    [_requestRoutes addObject:requestRoute];
+- (void)addRequestHandler:(id<TBSocketRequestHandler>)requestHandler {
+    [_requestHandlers addObject:requestHandler];
 }
 
-- (void)insertRequestRoute:(TBSocketRoute *)requestRoute atIndex:(NSUInteger)index {
-    [_requestRoutes insertObject:requestRoute atIndex:index];
+- (void)insertRequestHandler:(id<TBSocketRequestHandler>)requestHandler atIndex:(NSUInteger)index {
+    [_requestHandlers insertObject:requestHandler atIndex:index];
 }
 
-- (void)removeRequestRoute:(TBSocketRoute *)requestRoute {
-    NSUInteger idx = [_requestRoutes indexOfObject:_requestRoutes];
-    NSAssert(idx!=NSNotFound, @"route not registered");
+- (void)removeRequestHandler:(id<TBSocketRequestHandler>)requestHandler {
+    NSUInteger idx = [_requestHandlers indexOfObject:requestHandler];
+    NSAssert(idx!=NSNotFound, @"handler not registered");
     if (idx!=NSNotFound) {        
-        [_requestRoutes removeObjectAtIndex:idx];
+        [_requestHandlers removeObjectAtIndex:idx];
     }
 }
 
-- (void)removeAllRequestRoutes {
-    [_requestRoutes removeAllObjects];
+- (void)removeAllRequestHandlers {
+    [_requestHandlers removeAllObjects];
 }
 
 @end

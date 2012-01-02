@@ -8,14 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@class TBSocketHandler;
+#import "TBSocketRequestHandler.h"
+@class TBSocketRequest, TBSocketConnection;
 
-@interface TBSocketRoute : NSObject
+@interface TBSocketRoute : NSObject<TBSocketRequestHandler>
 
-- (id)initWithRegexString:(NSString *)regexString socketHandler:(TBSocketHandler *)handler;
-- (id)initWithRegularExpression:(NSRegularExpression *)regex socketHandler:(TBSocketHandler *)handler;
++ (id)routeWithRegexString:(NSString *)regexString requestHandlerClass:(Class)handler;
++ (id)routeWithRegexString:(NSString *)regexString requestHandler:(id<TBSocketRequestHandler>)handler;
 
-@property (readonly, strong) TBSocketHandler *socketHandler;
-@property (readonly, strong) NSRegularExpression *routeRegularExpression;
++ (id)routeWithRegularExpression:(NSRegularExpression *)regex requestHandlerClass:(Class)handler;
++ (id)routeWithRegularExpression:(NSRegularExpression *)regex requestHandler:(id<TBSocketRequestHandler>)handler;
+
++ (id)routeWithPathPrefixString:(NSString *)path requestHandlerClass:(Class)handler;
++ (id)routeWithPathPrefixString:(NSString *)path requestHandler:(id<TBSocketRequestHandler>)handler;
+
+@property (readonly, strong) id<TBSocketRequestHandler> requestHandler;
 
 @end

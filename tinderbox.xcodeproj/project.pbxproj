@@ -31,6 +31,9 @@
 		D91323EC14AACCF500EF9073 /* TBWebViewAppScriptableObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EB14AACCF500EF9073 /* TBWebViewAppScriptableObject.m */; };
 		D91323EF14AACE3500EF9073 /* TBRoomWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */; };
 		D91323F314AC2D0300EF9073 /* TBSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = D91323F214AC2D0200EF9073 /* TBSocketServer.m */; };
+		D94F422B14B12CC800762FE1 /* NSDictionary+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D94F422A14B12CC800762FE1 /* NSDictionary+TB.m */; };
+		D94F422E14B12CF600762FE1 /* NSString+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D94F422D14B12CF600762FE1 /* NSString+TB.m */; };
+		D94F423114B1317C00762FE1 /* TBSocketBlockRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D94F423014B1317C00762FE1 /* TBSocketBlockRequestHandler.m */; };
 		D985254014AE99F600688171 /* TBSocketObjectMappedRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D985253F14AE99F600688171 /* TBSocketObjectMappedRequestHandler.m */; };
 		D985254314AEA10B00688171 /* TBSocketResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = D985254214AEA10B00688171 /* TBSocketResponse.m */; };
 		D985254614AED74600688171 /* TBSocketRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = D985254514AED74500688171 /* TBSocketRoute.m */; };
@@ -92,6 +95,12 @@
 		D91323EE14AACE3500EF9073 /* TBRoomWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBRoomWindowController.m; sourceTree = "<group>"; };
 		D91323F114AC2D0200EF9073 /* TBSocketServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketServer.h; sourceTree = "<group>"; };
 		D91323F214AC2D0200EF9073 /* TBSocketServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketServer.m; sourceTree = "<group>"; };
+		D94F422914B12CC800762FE1 /* NSDictionary+TB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+TB.h"; sourceTree = "<group>"; };
+		D94F422A14B12CC800762FE1 /* NSDictionary+TB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TB.m"; sourceTree = "<group>"; };
+		D94F422C14B12CF600762FE1 /* NSString+TB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TB.h"; sourceTree = "<group>"; };
+		D94F422D14B12CF600762FE1 /* NSString+TB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TB.m"; sourceTree = "<group>"; };
+		D94F422F14B1317B00762FE1 /* TBSocketBlockRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; path = TBSocketBlockRequestHandler.h; sourceTree = "<group>"; };
+		D94F423014B1317C00762FE1 /* TBSocketBlockRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketBlockRequestHandler.m; sourceTree = "<group>"; };
 		D985253C14AE89FF00688171 /* TBSocketRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketRequestHandler.h; sourceTree = "<group>"; };
 		D985253E14AE99F600688171 /* TBSocketObjectMappedRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketObjectMappedRequestHandler.h; sourceTree = "<group>"; };
 		D985253F14AE99F600688171 /* TBSocketObjectMappedRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketObjectMappedRequestHandler.m; sourceTree = "<group>"; };
@@ -253,6 +262,8 @@
 				D985254214AEA10B00688171 /* TBSocketResponse.m */,
 				D985254414AED74500688171 /* TBSocketRoute.h */,
 				D985254514AED74500688171 /* TBSocketRoute.m */,
+				D94F422F14B1317B00762FE1 /* TBSocketBlockRequestHandler.h */,
+				D94F423014B1317C00762FE1 /* TBSocketBlockRequestHandler.m */,
 			);
 			name = Server;
 			sourceTree = "<group>";
@@ -262,6 +273,10 @@
 			children = (
 				D91323C514A7DF9A00EF9073 /* NSFileManager+TB.h */,
 				D91323C614A7DF9A00EF9073 /* NSFileManager+TB.m */,
+				D94F422914B12CC800762FE1 /* NSDictionary+TB.h */,
+				D94F422A14B12CC800762FE1 /* NSDictionary+TB.m */,
+				D94F422C14B12CF600762FE1 /* NSString+TB.h */,
+				D94F422D14B12CF600762FE1 /* NSString+TB.m */,
 			);
 			name = Categories;
 			path = ..;
@@ -416,6 +431,9 @@
 				D985254014AE99F600688171 /* TBSocketObjectMappedRequestHandler.m in Sources */,
 				D985254314AEA10B00688171 /* TBSocketResponse.m in Sources */,
 				D985254614AED74600688171 /* TBSocketRoute.m in Sources */,
+				D94F422B14B12CC800762FE1 /* NSDictionary+TB.m in Sources */,
+				D94F422E14B12CF600762FE1 /* NSString+TB.m in Sources */,
+				D94F423114B1317C00762FE1 /* TBSocketBlockRequestHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

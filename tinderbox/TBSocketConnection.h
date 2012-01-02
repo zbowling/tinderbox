@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+
 @class TBSocketRequest, TBSocketServer, TBSocketResponse;
+
+typedef BOOL (^TBRequestReceivedHandlerBlock)(TBSocketRequest *request);
 
 @interface TBSocketConnection : NSObject <NSStreamDelegate>
 
@@ -23,8 +26,9 @@
 
 - (TBSocketRequest *)nextRequest;
 
-@property (copy) BOOL (^requestReceievedHandler)(TBSocketRequest *request);
+@property (copy,nonatomic) TBRequestReceivedHandlerBlock requestReceievedHandler;
 
-- (void)sendResponse:(TBSocketResponse *)response forRequest:(TBSocketRequest *)request;
+//This will accept TBSocketResponse, NSData, or NSString. It also accepts NSDictionary and NSArray which it converts to JSON.
+- (void)sendResponse:(id)response forRequest:(TBSocketRequest *)request;
 
 @end

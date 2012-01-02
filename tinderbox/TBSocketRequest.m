@@ -7,16 +7,21 @@
 //
 
 #import "TBSocketRequest.h"
+#import "NSDictionary+TB.h"
 
 @implementation TBSocketRequest {
     CFHTTPMessageRef _requestRef;
+    TBSocketConnection *_connection;
 }
 
-- (id)initWithHTTPMessage:(CFHTTPMessageRef)requestRef
+@synthesize connection=_connection;
+
+- (id)initWithHTTPMessage:(CFHTTPMessageRef)requestRef connection:(TBSocketConnection *)connection;
 {
     self = [super init];
     if (self)
     {
+        _connection = connection;
         _requestRef = (CFHTTPMessageRef)CFRetain(requestRef);
     }
     return self;
@@ -51,6 +56,10 @@
 
 - (NSString *)HTTPVersion {
     return (__bridge_transfer NSString *)CFHTTPMessageCopyVersion(_requestRef);
+}
+
+- (NSDictionary *)URLQueryParams {
+    return [NSDictionary dictionaryWithFormEncodedString:[[self URL] query]];
 }
 
 @end
