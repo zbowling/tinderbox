@@ -3,6 +3,7 @@ eco = require("eco");
 
 //we listen on this socket
 var socketPath = process.argv[2];
+var serverPath = process.argv[3];
 
 var fs = require('fs');
 var express = require('express');

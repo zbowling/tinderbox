@@ -175,6 +175,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     _task.arguments = [NSArray arrayWithObjects:
                        fullScriptPath,
                        [self serverSocketPath],
+                       [self callbackSocketPath],
                        nil];
     
     NSPipe *inPipe = [NSPipe pipe];
