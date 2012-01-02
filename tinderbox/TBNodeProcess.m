@@ -232,6 +232,7 @@ NSString * const TBNodeServerLogNotification = @"TBNodeServerLogNotification";
     bzero(sockaddr, sizeof(struct sockaddr_un));
     sockaddr->sun_family = AF_UNIX;
     strncpy(sockaddr->sun_path, [path cStringUsingEncoding:NSUTF8StringEncoding], 104);
+    sockaddr->sun_len = SUN_LEN(sockaddr);
     CFDataRef address = CFDataCreateWithBytesNoCopy(NULL, (const UInt8 *)sockaddr, sizeof(struct sockaddr_un), NULL);
     CFSocketSignature signature = { AF_UNIX, SOCK_STREAM, 0, address };
     
