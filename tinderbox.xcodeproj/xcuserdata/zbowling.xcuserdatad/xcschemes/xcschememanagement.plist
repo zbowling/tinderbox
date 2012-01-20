@@ -4,10 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>node.xcscheme</key>
+		<key>libnode.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>3</integer>
+		</dict>
+		<key>nodeserver.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>tinderbox.xcscheme</key>
 		<dict>
@@ -23,6 +28,21 @@
 			<true/>
 		</dict>
 		<key>D9131A3214A6A24700EF9073</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D94F423914B2803F00762FE1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D94F424A14B2809F00762FE1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D94F426D14B2F00100762FE1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

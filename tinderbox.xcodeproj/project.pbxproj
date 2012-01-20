@@ -34,6 +34,10 @@
 		D94F422B14B12CC800762FE1 /* NSDictionary+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D94F422A14B12CC800762FE1 /* NSDictionary+TB.m */; };
 		D94F422E14B12CF600762FE1 /* NSString+TB.m in Sources */ = {isa = PBXBuildFile; fileRef = D94F422D14B12CF600762FE1 /* NSString+TB.m */; };
 		D94F423114B1317C00762FE1 /* TBSocketBlockRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D94F423014B1317C00762FE1 /* TBSocketBlockRequestHandler.m */; };
+		D94F426F14B2F00100762FE1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D985254C14AF179F00688171 /* Foundation.framework */; };
+		D94F427514B2F00200762FE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D94F427314B2F00200762FE1 /* InfoPlist.strings */; };
+		D94F427814B2F00200762FE1 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = D94F427714B2F00200762FE1 /* main.mm */; };
+		D94F427E14B2F03300762FE1 /* libnode.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D94F425314B28B6400762FE1 /* libnode.dylib */; };
 		D985254014AE99F600688171 /* TBSocketObjectMappedRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D985253F14AE99F600688171 /* TBSocketObjectMappedRequestHandler.m */; };
 		D985254314AEA10B00688171 /* TBSocketResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = D985254214AEA10B00688171 /* TBSocketResponse.m */; };
 		D985254614AED74600688171 /* TBSocketRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = D985254514AED74500688171 /* TBSocketRoute.m */; };
@@ -99,8 +103,14 @@
 		D94F422A14B12CC800762FE1 /* NSDictionary+TB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+TB.m"; sourceTree = "<group>"; };
 		D94F422C14B12CF600762FE1 /* NSString+TB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TB.h"; sourceTree = "<group>"; };
 		D94F422D14B12CF600762FE1 /* NSString+TB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TB.m"; sourceTree = "<group>"; };
-		D94F422F14B1317B00762FE1 /* TBSocketBlockRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; path = TBSocketBlockRequestHandler.h; sourceTree = "<group>"; };
+		D94F422F14B1317B00762FE1 /* TBSocketBlockRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketBlockRequestHandler.h; sourceTree = "<group>"; };
 		D94F423014B1317C00762FE1 /* TBSocketBlockRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketBlockRequestHandler.m; sourceTree = "<group>"; };
+		D94F425314B28B6400762FE1 /* libnode.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnode.dylib; path = res/node/lib/libnode.dylib; sourceTree = "<group>"; };
+		D94F426E14B2F00100762FE1 /* com.zbowling.tinderbox.nodeserver.xpc */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = com.zbowling.tinderbox.nodeserver.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
+		D94F427214B2F00200762FE1 /* nodeserver-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "nodeserver-Info.plist"; sourceTree = "<group>"; };
+		D94F427414B2F00200762FE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D94F427614B2F00200762FE1 /* nodeserver-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "nodeserver-Prefix.pch"; sourceTree = "<group>"; };
+		D94F427714B2F00200762FE1 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		D985253C14AE89FF00688171 /* TBSocketRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketRequestHandler.h; sourceTree = "<group>"; };
 		D985253E14AE99F600688171 /* TBSocketObjectMappedRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBSocketObjectMappedRequestHandler.h; sourceTree = "<group>"; };
 		D985253F14AE99F600688171 /* TBSocketObjectMappedRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBSocketObjectMappedRequestHandler.m; sourceTree = "<group>"; };
@@ -135,6 +145,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D94F426B14B2F00100762FE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D94F427E14B2F03300762FE1 /* libnode.dylib in Frameworks */,
+				D94F426F14B2F00100762FE1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -143,6 +162,7 @@
 			children = (
 				D9131A1C14A6A24600EF9073 /* tinderbox */,
 				D9131A3914A6A24700EF9073 /* tinderboxTests */,
+				D94F427014B2F00100762FE1 /* nodeserver */,
 				D9131A1514A6A24600EF9073 /* Frameworks */,
 				D9131A1314A6A24600EF9073 /* Products */,
 			);
@@ -153,6 +173,7 @@
 			children = (
 				D9131A1214A6A24600EF9073 /* tinderbox.app */,
 				D9131A3314A6A24700EF9073 /* tinderboxTests.octest */,
+				D94F426E14B2F00100762FE1 /* com.zbowling.tinderbox.nodeserver.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,6 +181,7 @@
 		D9131A1514A6A24600EF9073 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D94F425314B28B6400762FE1 /* libnode.dylib */,
 				D91323D814A8137000EF9073 /* WebKit.framework */,
 				D9131A1614A6A24600EF9073 /* Cocoa.framework */,
 				D9131A3414A6A24700EF9073 /* SenTestingKit.framework */,
@@ -302,7 +324,43 @@
 			name = "Scriptable Objects";
 			sourceTree = "<group>";
 		};
+		D94F427014B2F00100762FE1 /* nodeserver */ = {
+			isa = PBXGroup;
+			children = (
+				D94F427714B2F00200762FE1 /* main.mm */,
+				D94F427114B2F00100762FE1 /* Supporting Files */,
+			);
+			path = nodeserver;
+			sourceTree = "<group>";
+		};
+		D94F427114B2F00100762FE1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D94F427214B2F00200762FE1 /* nodeserver-Info.plist */,
+				D94F427314B2F00200762FE1 /* InfoPlist.strings */,
+				D94F427614B2F00200762FE1 /* nodeserver-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		D94F424A14B2809F00762FE1 /* libnode */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "";
+			buildConfigurationList = D94F424B14B2809F00762FE1 /* Build configuration list for PBXLegacyTarget "libnode" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/zbowling/projects/tinderbox/build;
+			dependencies = (
+			);
+			name = libnode;
+			passBuildSettingsInEnvironment = 1;
+			productName = libnode;
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		D9131A1114A6A24600EF9073 /* tinderbox */ = {
@@ -341,6 +399,23 @@
 			productReference = D9131A3314A6A24700EF9073 /* tinderboxTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
+		D94F426D14B2F00100762FE1 /* nodeserver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D94F427914B2F00200762FE1 /* Build configuration list for PBXNativeTarget "nodeserver" */;
+			buildPhases = (
+				D94F426A14B2F00100762FE1 /* Sources */,
+				D94F426B14B2F00100762FE1 /* Frameworks */,
+				D94F426C14B2F00100762FE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = nodeserver;
+			productName = nodeserver;
+			productReference = D94F426E14B2F00100762FE1 /* com.zbowling.tinderbox.nodeserver.xpc */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -364,6 +439,8 @@
 			targets = (
 				D9131A1114A6A24600EF9073 /* tinderbox */,
 				D9131A3214A6A24700EF9073 /* tinderboxTests */,
+				D94F424A14B2809F00762FE1 /* libnode */,
+				D94F426D14B2F00100762FE1 /* nodeserver */,
 			);
 		};
 /* End PBXProject section */
@@ -389,6 +466,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9131A3E14A6A24700EF9073 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D94F426C14B2F00100762FE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D94F427514B2F00200762FE1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +530,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D94F426A14B2F00100762FE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D94F427814B2F00200762FE1 /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -484,6 +577,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				D9131A3D14A6A24700EF9073 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D94F427314B2F00200762FE1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D94F427414B2F00200762FE1 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -588,6 +689,59 @@
 			};
 			name = Release;
 		};
+		D94F424C14B2809F00762FE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D94F424D14B2809F00762FE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		D94F427A14B2F00200762FE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "nodeserver/nodeserver-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/res/node/include/node\"";
+				INFOPLIST_FILE = "nodeserver/nodeserver-Info.plist";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/res/node/lib\"";
+				MACH_O_TYPE = mh_execute;
+				PRODUCT_NAME = "com.zbowling.tinderbox.$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xpc;
+			};
+			name = Debug;
+		};
+		D94F427B14B2F00200762FE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "nodeserver/nodeserver-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/res/node/include/node\"";
+				INFOPLIST_FILE = "nodeserver/nodeserver-Info.plist";
+				LIBRARY_SEARCH_PATHS = "\"$(SRCROOT)/res/node/lib\"";
+				MACH_O_TYPE = mh_execute;
+				PRODUCT_NAME = "com.zbowling.tinderbox.$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xpc;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -617,6 +771,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D94F424B14B2809F00762FE1 /* Build configuration list for PBXLegacyTarget "libnode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D94F424C14B2809F00762FE1 /* Debug */,
+				D94F424D14B2809F00762FE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D94F427914B2F00200762FE1 /* Build configuration list for PBXNativeTarget "nodeserver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D94F427A14B2F00200762FE1 /* Debug */,
+				D94F427B14B2F00200762FE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
